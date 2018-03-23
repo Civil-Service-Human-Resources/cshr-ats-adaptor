@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .genericModelSubstitutes(ResponseEntity.class)
                 .useDefaultResponseMessages(false)
                 .enableUrlTemplating(true)
-                .tags(new Tag("ATS Adaptor Service", "API relating to request and process vacancies from an external client for persistence into the CSHR Vacancy data store."))
+                .tags(new Tag("ATS Adaptor Service", "API relating to requesting and processing of vacancies from an external client for persistence into the CSHR Vacancy data store."))
                 ;
     }
 }

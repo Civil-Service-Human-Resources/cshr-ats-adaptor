@@ -20,9 +20,10 @@
 
 	<properties>
         <cshr-common.version>0.0.2</cshr-common.version>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<spring.oauth.version>2.3.0.RELEASE</spring.oauth.version>
 	</properties>
 
     <dependencyManagement>
@@ -48,6 +49,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>${spring.oauth.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Testing -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -68,6 +81,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

@@ -14,7 +14,7 @@ tags:
   - name: vacancies-controller
     description: Vacancies Controller
   - name: ATS Adaptor Service
-    description: API relating to request and process vacancies from an external client for persistence into the CSHR Vacancy data store.
+    description: API relating to requesting and processing of vacancies from an external client for persistence into the CSHR Vacancy data store.
 paths:
   /vacancies:
     get:

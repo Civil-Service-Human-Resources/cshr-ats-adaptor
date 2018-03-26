@@ -25,6 +25,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.cshr.atsadaptor.AtsAdaptorApplication;
 
+/**
+ * Tests {@link VacanciesController}
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AtsAdaptorApplication.class)
 @ContextConfiguration
 @WebAppConfiguration

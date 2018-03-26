@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AtsAdaptorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AtsAdaptorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AtsAdaptorApplication.class, args);
+    }
 }

@@ -1,0 +1,17 @@
+security:
+  oauth2:
+    client:
+      clientId: client
+      clientSecret: client
+    refresh:
+      token:
+        duration: 240
+    resource:
+      filter-order: 3
+    token:
+      duration: 120
+
+spring:
+  user:
+    name: user
+    password: user

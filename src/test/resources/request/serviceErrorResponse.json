@@ -1,0 +1,6 @@
+{
+  "vacancyResponse" : {
+    "statusCode" : "5",
+    "statusMessage" : "service error"
+  }
+}

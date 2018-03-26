@@ -1,0 +1,6 @@
+{
+  "vacancyResponse" : {
+    "statusCode" : "foo",
+    "statusMessage" : "unknown statusCode"
+  }
+}

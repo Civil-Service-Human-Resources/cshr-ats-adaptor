@@ -1,0 +1,8 @@
+ats:
+  authentication:
+    token:
+  client:
+    id:
+  list:
+    request:
+      url:

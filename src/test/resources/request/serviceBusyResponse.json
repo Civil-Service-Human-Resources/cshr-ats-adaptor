@@ -1,0 +1,6 @@
+{
+  "vacancyResponse" : {
+    "statusCode" : "4",
+    "statusMessage" : "service busy"
+  }
+}

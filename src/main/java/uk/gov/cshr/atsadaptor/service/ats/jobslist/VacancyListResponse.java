@@ -4,8 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class is the java representation of the json body returned from an external applicant tracking system when a
- * request to it for the list of live vacancies.
+ * This class is the java representation of the json body returned from an Applicant Tracking System (ATS) when
+ * a request to it for the list of live vacancies.
  * <p>
  * Included is a statusCode and and a statusMessage
  * <p>

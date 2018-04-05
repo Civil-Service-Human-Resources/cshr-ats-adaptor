@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import uk.gov.cshr.error.CSHRServiceStatus;
 
 /**
- * Defines the REST services to request vacancies from an external applicant tracking system to be processed into the CSHR data store.
+ * Defines the REST services to request vacancies from an Applicant Tracking System (ATS) to be processed into the CSHR
+ * data store.
  */
 @RequestMapping(value = "/vacancies", produces = MediaType.APPLICATION_JSON_VALUE)
 @ResponseBody

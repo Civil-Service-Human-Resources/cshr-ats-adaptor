@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class represents the data about each vacancy in the external Applicant Tracking System (ATS) when the
+ * This class represents the data about each vacancy in the Applicant Tracking System (ATS) when the
  * listRequest request type is sent to it.
  * <p>
  * The data consists of two properties:

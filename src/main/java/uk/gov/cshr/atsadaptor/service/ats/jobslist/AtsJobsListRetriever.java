@@ -22,7 +22,7 @@ public class AtsJobsListRetriever implements JobsListRetriever {
      * Default constructor for autowiring.
      *
      * @param restTemplateBuilder instance of RestTemplateBuilder to be autowired
-     * @param atsListUrl          value of url to external applicant tracking system (ats) system
+     * @param atsListUrl          value of url to Applicant Tracking System (ATS) system
      */
     public AtsJobsListRetriever(RestTemplateBuilder restTemplateBuilder,
                                 @Value("${ats.list.request.url}") String atsListUrl,

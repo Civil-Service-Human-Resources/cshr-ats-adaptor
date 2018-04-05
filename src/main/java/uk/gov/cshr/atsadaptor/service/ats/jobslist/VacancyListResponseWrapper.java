@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * This class is the java representation of the json body returned from an external applicant tracking system when a
+ * This class is the java representation of the json body returned from an Applicant Tracking System (ATS) when a
  * request to it for the list of live vacancies.
  */
 @Builder

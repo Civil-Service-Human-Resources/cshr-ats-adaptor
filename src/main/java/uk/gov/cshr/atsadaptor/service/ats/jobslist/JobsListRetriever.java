@@ -3,7 +3,7 @@ package uk.gov.cshr.atsadaptor.service.ats.jobslist;
 import java.util.List;
 
 /**
- * Defines the methods available for getting the list of active jobs from an external Applicant Tracking System (ATS)
+ * Defines the methods available for getting the list of active jobs from an Applicant Tracking System (ATS)
  */
 public interface JobsListRetriever {
     /**

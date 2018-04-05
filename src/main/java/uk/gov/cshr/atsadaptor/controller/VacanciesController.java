@@ -9,9 +9,6 @@ import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.VacancyListData;
 import uk.gov.cshr.error.CSHRServiceStatus;
 
-/**
- * This class provides the REST services to request vacancies from an external applicant tracking system to be processed into the CSHR data store.
- */
 @RestController
 @Slf4j
 public class VacanciesController implements VacanciesApi {

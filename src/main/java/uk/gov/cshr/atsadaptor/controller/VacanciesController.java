@@ -25,6 +25,8 @@ public class VacanciesController implements VacanciesApi {
     public ResponseEntity<CSHRServiceStatus> getVacancies() {
         List<VacancyListData> liveJobs = jobsListRetriever.getLiveVacancies();
 
+        log.info(liveJobs.toString());
+
         return ResponseEntity.ok(CSHRServiceStatus.builder().summary("Request to load vacancies received and found the following live vacancies: " + liveJobs.toString()).build());
     }
 }

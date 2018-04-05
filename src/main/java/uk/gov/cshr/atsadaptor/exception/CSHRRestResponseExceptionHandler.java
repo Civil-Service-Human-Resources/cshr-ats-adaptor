@@ -15,7 +15,7 @@ import uk.gov.cshr.error.CSHRServiceStatus;
  */
 @ControllerAdvice
 @Slf4j
-public class CshrRestResponseExceptionHandler extends ResponseEntityExceptionHandler {
+public class CSHRRestResponseExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handle exceptions that represent internal server errors
      *
@@ -27,7 +27,7 @@ public class CshrRestResponseExceptionHandler extends ResponseEntityExceptionHan
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public CSHRServiceStatus handleException(ExternalApplicantTrackingSystemException ex, WebRequest request) {
-        log.error(ex.getMessage(), ex);
+        log.error(ex.getCshrServiceStatus().getSummary(), ex);
 
         return ex.getCshrServiceStatus();
     }

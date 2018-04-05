@@ -1,0 +1,11 @@
+{
+  "vacancyResponse" : {
+    "statusCode" : "1",
+    "statusMessage" : "success",
+    "responseData" : {
+      "responseDataTimestamp" : "2018-03-13T11:50:01Z",
+      "vacancyListCount" : "0",
+      "vacancyList" : []
+    }
+  }
+}

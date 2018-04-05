@@ -1,0 +1,6 @@
+{
+  "vacancyResponse" : {
+    "statusCode" : "3",
+    "statusMessage" : "invalid token"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "vacancyResponse": {
+    "statusCode": "1",
+    "statusMessage": "success",
+    "responseData": {
+      "responseDataTimestamp": "2018-03-13T11:50:01Z",
+      "vacancyJobRequestLimit": "100",
+      "vacancyListCount": "4",
+      "vacancyList": [
+        {
+          "jcode": "1234567",
+          "vacancyTimestamp": "2018-03-13T09:48:07Z"
+        },
+        {
+          "jcode": "1544568",
+          "vacancyTimestamp": "2018-03-12T10:48:06Z"
+        },
+        {
+          "jcode": "1634587",
+          "vacancyTimestamp": "2018-03-11T17:53:12Z"
+        },
+        {
+          "jcode": "1533291",
+          "vacancyTimestamp": "2018-03-09T13:09:12Z"
+        }
+      ]
+    }
+  }
+}

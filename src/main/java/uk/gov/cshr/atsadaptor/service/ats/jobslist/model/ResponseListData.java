@@ -1,4 +1,4 @@
-package uk.gov.cshr.atsadaptor.service.ats.jobslist;
+package uk.gov.cshr.atsadaptor.service.ats.jobslist.model;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import lombok.Data;
  */
 @Builder
 @Data
-class ResponseListData {
+public class ResponseListData {
     private String responseDataTimestamp;
     private int vacancyJobRequestLimit;
     private List<VacancyListData> vacancyList;

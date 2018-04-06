@@ -20,20 +20,20 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
-import uk.gov.cshr.atsadaptor.service.ats.jobslist.AtsJobsListRetriever;
-import uk.gov.cshr.atsadaptor.service.ats.jobslist.VacancyListData;
+import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
+import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 import uk.gov.cshr.atsadaptor.util.VacancyListDataBuilder;
 
 /**
- * Tests {@link AtsJobsListRetriever}
+ * Tests {@link JobsListRetriever}
  */
 @RunWith(SpringRunner.class)
-@RestClientTest(AtsJobsListRetriever.class)
-public class AtsJobsListRetrieverTest {
+@RestClientTest(JobsListRetriever.class)
+public class JobsListRetrieverTest {
     private static final String EXTERNAL_URL = "/theurl";
 
     @Inject
-    private AtsJobsListRetriever processor;
+    private JobsListRetriever jobsListRetriever;
     @Inject
     private MockRestServiceServer server;
 
@@ -43,7 +43,7 @@ public class AtsJobsListRetrieverTest {
                 .andRespond(withSuccess(getExpectedResponse("unknownStatusCodeResponse.json"),
                         MediaType.APPLICATION_JSON));
 
-        processor.getLiveVacancies();
+        jobsListRetriever.getLiveVacancies();
     }
 
     @Test(expected = ExternalApplicantTrackingSystemException.class)
@@ -56,7 +56,7 @@ public class AtsJobsListRetrieverTest {
                 .andRespond(withSuccess(getExpectedResponse(expectedResponseFileName),
                         MediaType.APPLICATION_JSON));
 
-        processor.getLiveVacancies();
+        jobsListRetriever.getLiveVacancies();
 
     }
 
@@ -81,7 +81,7 @@ public class AtsJobsListRetrieverTest {
                 .andRespond(withSuccess(getExpectedResponse("listRequestResponses/emptyResponse.json"),
                         MediaType.APPLICATION_JSON));
 
-        assertThat(processor.getLiveVacancies(), is(empty()));
+        assertThat(jobsListRetriever.getLiveVacancies(), is(empty()));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class AtsJobsListRetrieverTest {
                 .andRespond(withSuccess(getExpectedResponse("listRequestResponses/fourVacanciesList.json"),
                         MediaType.APPLICATION_JSON));
 
-        List<VacancyListData> vacancies = processor.getLiveVacancies();
+        List<VacancyListData> vacancies = jobsListRetriever.getLiveVacancies();
 
         assertThat(vacancies, is(equalTo(VacancyListDataBuilder.getInstance().buildExepctedVacancyListData())));
     }
@@ -98,7 +98,7 @@ public class AtsJobsListRetrieverTest {
     private String getExpectedResponse(String expectedResponseFileName) throws Exception {
         byte[] content;
 
-        try (InputStream inputStream = AtsJobsListRetrieverTest.class.getResourceAsStream("/" + expectedResponseFileName)) {
+        try (InputStream inputStream = JobsListRetrieverTest.class.getResourceAsStream("/" + expectedResponseFileName)) {
             content = ByteStreams.toByteArray(inputStream);
         }
 

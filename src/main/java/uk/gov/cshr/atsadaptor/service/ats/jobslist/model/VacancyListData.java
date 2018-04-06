@@ -1,4 +1,4 @@
-package uk.gov.cshr.atsadaptor.service.ats.jobslist;
+package uk.gov.cshr.atsadaptor.service.ats.jobslist.model;
 
 import java.sql.Timestamp;
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import uk.gov.cshr.atsadaptor.service.ats.jobslist.VacancyListData;
+import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 
 public final class VacancyListDataBuilder {
     private static final VacancyListDataBuilder INSTANCE = new VacancyListDataBuilder();

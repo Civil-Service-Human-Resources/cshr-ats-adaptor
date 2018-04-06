@@ -3,6 +3,9 @@ ats:
     token:
   client:
     id:
+  jobrun:
+    history:
+      directory:
   list:
     request:
       url:

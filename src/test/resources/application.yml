@@ -6,6 +6,7 @@ ats:
   jobrun:
     history:
       directory: ./
+      file: jobRunHistory.txt
   list:
     request:
       url: /theurl

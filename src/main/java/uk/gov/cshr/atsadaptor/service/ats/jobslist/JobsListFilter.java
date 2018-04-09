@@ -1,6 +1,9 @@
 package uk.gov.cshr.atsadaptor.service.ats.jobslist;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +12,10 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
+import uk.gov.cshr.error.CSHRServiceStatus;
+import uk.gov.cshr.error.ErrorCode;
 
 /**
  * This class is responsible for filtering the list of live jobs to produce a list of those that have changed since the
@@ -18,10 +24,13 @@ import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 @Component
 @Slf4j
 public class JobsListFilter {
-    private String jobRunHistoryDirectory;
+    private String historyFileDirectory;
+    private String historyFileName;
 
-    public JobsListFilter(@Value("ats.jobrun.history.directory") String jobRunHistoryDirectory) {
-        this.jobRunHistoryDirectory = jobRunHistoryDirectory;
+    public JobsListFilter(@Value("ats.jobrun.history.directory") String historyFileDirectory,
+                          @Value("ats.jobrun.history.file") String historyFileName) {
+        this.historyFileDirectory = historyFileDirectory;
+        this.historyFileName = historyFileName;
     }
 
     /**
@@ -42,10 +51,10 @@ public class JobsListFilter {
         List<VacancyListData> filtered = new ArrayList<>();
 
         if (source != null && !source.isEmpty()) {
-            File historyFile = new File(jobRunHistoryDirectory + "/jobRunHistory.txt");
+            Path path = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
 
-            if (historyFile.exists()) {
-                filtered = filterVacancies(source, historyFile);
+            if (path.toFile().exists()) {
+                filtered = filterVacancies(source, path);
             } else {
                 filtered = source;
             }
@@ -55,8 +64,19 @@ public class JobsListFilter {
         return filtered;
     }
 
-    private List<VacancyListData> filterVacancies(List<VacancyListData> source, File historyFile) {
-        Timestamp lastRunDate = new Timestamp(historyFile.lastModified());
+    private List<VacancyListData> filterVacancies(List<VacancyListData> source, Path historyFile) {
+        Timestamp lastRunDate;
+
+        try {
+            lastRunDate = new Timestamp(Files.getLastModifiedTime(historyFile).toMillis());
+        } catch (IOException e) {
+            CSHRServiceStatus status = CSHRServiceStatus.builder()
+                    .code(ErrorCode.FILE_SYSTEM_ERROR.getCode())
+                    .summary("An error occurred trying to obtain the last modified time of " + historyFile.getFileName())
+                    .build();
+
+            throw new ExternalApplicantTrackingSystemException(status);
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("The last time this process ran was on :" + lastRunDate.toString());

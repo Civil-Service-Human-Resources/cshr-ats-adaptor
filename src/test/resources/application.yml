@@ -3,6 +3,10 @@ ats:
     token: token
   client:
     id: clientId
+  jobrun:
+    history:
+      directory: ./
+      file: jobRunHistory.txt
   list:
     request:
       url: /theurl

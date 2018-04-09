@@ -1,4 +1,4 @@
-package uk.gov.cshr.atsadaptor.service.ats.jobslist;
+package uk.gov.cshr.atsadaptor.service.ats.jobslist.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-class VacancyListResponseWrapper {
+public class VacancyListResponseWrapper {
     private VacancyListResponse vacancyResponse;
 }

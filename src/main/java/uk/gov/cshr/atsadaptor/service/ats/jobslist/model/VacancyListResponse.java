@@ -1,4 +1,4 @@
-package uk.gov.cshr.atsadaptor.service.ats.jobslist;
+package uk.gov.cshr.atsadaptor.service.ats.jobslist.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +24,7 @@ import lombok.Data;
  */
 @Builder
 @Data
-class VacancyListResponse {
+public class VacancyListResponse {
     private ResponseListData responseData;
     private String responseType;
     private String serviceVersion;

@@ -1,4 +1,4 @@
-package uk.gov.cshr.atsadaptor.service.ats.jobslist;
+package uk.gov.cshr.atsadaptor.service.ats.jobslist.model;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

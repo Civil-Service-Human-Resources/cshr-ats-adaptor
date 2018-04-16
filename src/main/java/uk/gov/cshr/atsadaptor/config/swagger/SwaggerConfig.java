@@ -23,7 +23,8 @@ public class SwaggerConfig {
     public Docket vacancyApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(AtsAdaptorApplication.class.getPackage().getName()))
+                .apis(
+                        RequestHandlerSelectors.basePackage(AtsAdaptorApplication.class.getPackage().getName()))
                 .paths(PathSelectors.any())
                 .build()
                 .pathMapping("/")
@@ -31,7 +32,9 @@ public class SwaggerConfig {
                 .genericModelSubstitutes(ResponseEntity.class)
                 .useDefaultResponseMessages(false)
                 .enableUrlTemplating(true)
-                .tags(new Tag("ATS Adaptor Service", "API relating to requesting and processing of vacancies from an external client for persistence into the CSHR Vacancy data store."))
-                ;
+                .tags(
+                        new Tag(
+                                "ATS Adaptor Service",
+                                "API relating to requesting and processing of vacancies from an external client for persistence into the CSHR Vacancy data store."));
     }
 }

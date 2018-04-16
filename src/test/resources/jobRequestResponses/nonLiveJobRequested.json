@@ -1,0 +1,18 @@
+{
+  "vacancyResponse": {
+    "responseData": {
+      "responseDataTimestamp": "2018-04-13T11:15:56Z",
+      "vacancy": [
+        {
+          "jcode": "1547353",
+          "vacancyResponseStatus": 6,
+          "vacancyResponseStatusMessage": "jcode requested not in live data set"
+        }
+      ]
+    },
+    "responseType": "jobResponse",
+    "serviceVersion": "1.00",
+    "statusCode": 1,
+    "statusMessage": "success"
+  }
+}

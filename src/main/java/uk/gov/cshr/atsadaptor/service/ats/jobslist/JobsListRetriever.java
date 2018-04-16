@@ -15,21 +15,23 @@ import uk.gov.cshr.atsadaptor.service.ats.request.VacancyRequest;
 import uk.gov.cshr.atsadaptor.service.ats.request.VacancyRequestWrapper;
 
 /**
- * This class is responsible for retrieving a list of live vacancies from a Applicant Tracking System (ATS)
+ * This class is responsible for retrieving a list of live vacancies from a Applicant Tracking
+ * System (ATS)
  */
 @Component
 @Slf4j
 public class JobsListRetriever {
-    private String atsListUrl;
+    private String atsRequestEndpoint;
     private String authenticationToken;
     private String clientId;
     private RestTemplate restTemplate;
 
-    public JobsListRetriever(RestTemplateBuilder restTemplateBuilder,
-                             @Value("${ats.list.request.url}") String atsListUrl,
-                             @Value("${ats.authentication.token}") String authenticationToken,
-                             @Value("${ats.client.id}") String clientId) {
-        this.atsListUrl = atsListUrl;
+    public JobsListRetriever(
+            RestTemplateBuilder restTemplateBuilder,
+            @Value("${ats.request.endpoint}") String atsRequestEndpoint,
+            @Value("${ats.authentication.token}") String authenticationToken,
+            @Value("${ats.client.id}") String clientId) {
+        this.atsRequestEndpoint = atsRequestEndpoint;
         this.authenticationToken = authenticationToken;
         this.clientId = clientId;
         this.restTemplate = restTemplateBuilder.build();
@@ -38,18 +40,28 @@ public class JobsListRetriever {
     /**
      * This method is responsible for getting a list of live vacancies from an external ATS.
      * <p>
-     * The list will be used to retrieve the details of each vacancy in the in the list and also to check for any closed vacancies in the CSHR Vacancy data store.
+     * <p>The list will be used to retrieve the details of each vacancy in the in the list and also to
+     * check for any closed vacancies in the CSHR Vacancy data store.
      *
      * @return List<VacancyListData> list of live vacancies
      */
     public List<VacancyListData> getLiveVacancies() {
-        log.debug("Obtaining the list of live vacancies from the ATS");
+        log.info("Retrieving the list of live vacancies from the ATS");
 
-        VacancyRequest rv = VacancyRequest.builder().requestType("listRequest").requestClientId(clientId).requestAuthToken(authenticationToken).build();
+        VacancyRequest rv =
+                VacancyRequest.builder()
+                        .requestType("listRequest")
+                        .requestClientId(clientId)
+                        .requestAuthToken(authenticationToken)
+                        .build();
+
         VacancyRequestWrapper request = VacancyRequestWrapper.builder().vacancyRequest(rv).build();
-        ResponseEntity<VacancyListResponseWrapper> response = restTemplate.postForEntity(atsListUrl, request, VacancyListResponseWrapper.class);
+        ResponseEntity<VacancyListResponseWrapper> response =
+                restTemplate.postForEntity(atsRequestEndpoint, request, VacancyListResponseWrapper.class);
 
-        ServiceResponseStatus.findByCode(response.getBody().getVacancyResponse().getStatusCode()).checkForError();
+        ServiceResponseStatus.checkForError(response.getBody().getVacancyResponse().getStatusCode());
+
+        log.debug("Response from ATS was successful");
 
         return response.getBody().getVacancyResponse().getResponseData().getVacancyList();
     }

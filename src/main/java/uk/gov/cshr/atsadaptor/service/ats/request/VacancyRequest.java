@@ -6,7 +6,8 @@ import lombok.Data;
 /**
  * This class represents the request body sent to the Applicant Tracking System's (ATS) api.
  * <p>
- * A request will consist of three elements:
+ * <p>A request will consist of three elements:
+ * <p>
  * <pre>
  *     <ul>
  *         <li>
@@ -31,4 +32,5 @@ public class VacancyRequest {
     private String requestType;
     private String requestClientId;
     private String requestAuthToken;
+    private String[] jcode;
 }

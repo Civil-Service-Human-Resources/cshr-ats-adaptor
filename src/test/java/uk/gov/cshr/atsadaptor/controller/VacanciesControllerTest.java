@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.cshr.atsadaptor.AtsAdaptorApplication;
-import uk.gov.cshr.atsadaptor.service.cshr.DepartmentsApplicationListener;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = AtsAdaptorApplication.class)
@@ -41,9 +39,6 @@ public class VacanciesControllerTest extends AbstractJUnit4SpringContextTests {
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mvc;
-
-    @MockBean
-    private DepartmentsApplicationListener listener;
 
     @Before
     public void setup() {

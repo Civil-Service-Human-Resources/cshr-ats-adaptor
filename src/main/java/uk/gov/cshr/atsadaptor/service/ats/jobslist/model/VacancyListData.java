@@ -9,7 +9,8 @@ import lombok.Data;
  * This class represents the data about each vacancy in the Applicant Tracking System (ATS) when the
  * listRequest request type is sent to it.
  * <p>
- * The data consists of two properties:
+ * <p>The data consists of two properties:
+ * <p>
  * <pre>
  *     <ul>
  *         <li>jcode - The id of the vacancy in the ATS</li>

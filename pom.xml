@@ -79,6 +79,13 @@
     </dependencyManagement>
 
 	<dependencies>
+        <!-- Temporary for use in this branch only -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-parameter-names</artifactId>

@@ -26,4 +26,16 @@ FROM 	openjdk:8u151-jre-alpine3.7
 
 COPY 	--from=build /usr/src/myapp/target/ats-adaptor-0.0.1.jar /ats-adaptor-0.0.1.jar
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/ats-adaptor-0.0.1.jar" ]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/ats-adaptor-0.0.1.jar", \
+        "--ats.authentication.token=${ATS_AUTHENTICATION_TOKEN}", \
+		"--ats.client.id=${ATS_CLIENT_ID}", \
+		"--ats.jobrun.history.directory=${ATS_JOBRUN_HISTORY_DIRECTORY}", \
+        "--ats.jobrun.history.file=${ATS_JOBRUN_HISTORY_FILE}", \
+        "--ats.jobrun.history.file=${ATS_JOBRUN_HISTORY_FILE}", \
+        "--ats.request.batch.size=${ATS_REQUEST_BATCH_SIZE}", \
+        "--ats.request.endpoint=${ATS_REQUEST_ENDPOINT}", \
+        "--cshr.api.service.department.findall.endpoint=${CSHR_API_SERVICE_DEPARTMENT_FINDALL_ENDPOINT}", \
+        "--cshr.api.service.search.username=${CSHR_API_SERVICE_SEARCH_USERNAME}", \
+        "--cshr.api.service.search.password=${CSHR_API_SERVICE_SEARCH_PASSWORD}", \
+        "--cshr.ats.vendor.id=${CSHR_ATS_VENDOR_ID}", \
+        "--server.port=${SERVER_PORT}"]

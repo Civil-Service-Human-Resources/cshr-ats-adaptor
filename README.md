@@ -4,4 +4,4 @@
 
 Build this image using
 
-`docker build -t cahr-adaptor --build-arg arg_maven_repo="https://location.of.maven.repo/nexus/content/groups/public" .
+`docker build -t cshr-adaptor --build-arg arg_maven_repo="https://location.of.maven.repo/nexus/content/groups/public" .

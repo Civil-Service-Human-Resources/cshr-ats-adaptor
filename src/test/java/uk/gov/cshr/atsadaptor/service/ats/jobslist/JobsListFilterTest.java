@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -101,6 +102,7 @@ public class JobsListFilterTest {
         Path historyFile = prepareHistoryFile(prepareADate(3, 10).getTime());
 
         List<VacancyListData> expected = source.subList(0, 3);
+        expected.sort(Comparator.comparing(VacancyListData :: getVacancyTimestamp));
         List<VacancyListData> actual = jobsListFilter.filter(source);
 
         assertThat(actual, is(equalTo(expected)));

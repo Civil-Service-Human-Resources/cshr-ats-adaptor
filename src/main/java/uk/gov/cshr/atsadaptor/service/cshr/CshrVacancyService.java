@@ -3,6 +3,7 @@ package uk.gov.cshr.atsadaptor.service.cshr;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,6 @@ public class CshrVacancyService implements VacancyService {
     public void processChangedVacancies(List<VacancyListData> changedVacancies) {
         log.info("Processing batches of vacancies that have changed since the last run.");
 
-        IntStream.range(0, (changedVacancies.size() + atsRequestBatchSize - 1) / atsRequestBatchSize)
-                .mapToObj(
-                        i ->
-                                changedVacancies.subList(
-                                        i * atsRequestBatchSize,
-                                        Math.min(changedVacancies.size(), (i + 1) * atsRequestBatchSize)))
-                .forEach(batch -> vacancyProcessor.process(batch));
+        Iterables.partition(changedVacancies, atsRequestBatchSize).forEach(batch -> vacancyProcessor.process(batch));
     }
 }

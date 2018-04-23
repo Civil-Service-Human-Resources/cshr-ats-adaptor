@@ -22,7 +22,7 @@ class DefaultMapper extends DataMapper {
      * @return the raw value of the field unmodified or null if there is no data to return
      */
     String map(Map<String, Object> source, String fieldName) {
-        log.info("Mapping data for a field called " + fieldName);
+        log.debug("Mapping data for a field called " + fieldName);
 
         String result = null;
 

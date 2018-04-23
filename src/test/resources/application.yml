@@ -2,11 +2,27 @@ ats:
   authentication:
     token: token
   client:
-    id: clientId
+    id: clientIdsss
   jobrun:
     history:
       directory: ./
       file: jobRunHistory.txt
-  list:
-    request:
-      url: /theurl
+  request:
+    batch:
+      size: 100
+    endpoint: /theurl
+cshr:
+  api:
+    service:
+      department:
+        findAll:
+          endpoint: http://localhost/department
+      vacancy:
+        save:
+          endpoint:
+      search:
+        username: searchusername
+        password: searchpassword
+  ats:
+    vendor:
+      id: vendorId

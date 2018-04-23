@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * This class is responsible for ensuring that the Swagger UI html page is only accessible when the a specific profile is enabled on startup.
+ * This class is responsible for ensuring that the Swagger UI html page is only accessible when the
+ * a specific profile is enabled on startup.
  */
 @Profile("!swagger-dev")
 @RestController
 public class SwaggerUIController {
     /**
-     * This method is responsible for preventing access to the swagger-ui.html page if a specific profile is not enabled.
+     * This method is responsible for preventing access to the swagger-ui.html page if a specific
+     * profile is not enabled.
      *
      * @param httpResponse the response to be returned
      */

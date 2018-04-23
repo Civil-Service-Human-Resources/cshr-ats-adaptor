@@ -4,12 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class is the java representation of the json body returned from an Applicant Tracking System (ATS) when
- * a request to it for the list of live vacancies.
+ * This class is the java representation of the json body returned from an Applicant Tracking System
+ * (ATS) when a request to it for the list of live vacancies.
  * <p>
- * Included is a statusCode and and a statusMessage
+ * <p>Included is a statusCode and and a statusMessage
  * <p>
- * The value of the statusCode can be one of:
+ * <p>The value of the statusCode can be one of:
+ * <p>
  * <pre>
  *     <ul>
  *         <li>1 - The request was successful</li>
@@ -20,7 +21,7 @@ import lombok.Data;
  *     </ul>
  * </pre>
  * <p>
- * If the statusCode is 1 then responseData will be returned otherwise there will be none.
+ * <p>If the statusCode is 1 then responseData will be returned otherwise there will be none.
  */
 @Builder
 @Data

@@ -4,9 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
-import uk.gov.cshr.error.CSHRServiceStatus;
-import uk.gov.cshr.error.ErrorCode;
+import uk.gov.cshr.status.CSHRServiceStatus;
+import uk.gov.cshr.status.StatusCode;
 
+/**
+ * This enum represents the possible status codes that can be returned from any request to the
+ * Applicant Tracking System's api.
+ * <p>
+ * <p>It provides a method for throwing an exception for any status that is not SUCCESS.
+ */
 public enum ServiceResponseStatus {
     SUCCESS("The external service reported that an invalid request was received"),
     INVALID_REQUEST("The external service reported that an invalid request was received"),
@@ -31,28 +37,19 @@ public enum ServiceResponseStatus {
     }
 
     /**
-     * This method is responsible for checking if the enum is an error condition and if so throws a RuntimeException.
+     * This method is responsible for checking if the enum is an error condition and if so throws a
+     * ExternalApplicantTrackingSystemException.
      */
-    public void checkForError() {
-        if (!this.equals(SUCCESS)) {
-            CSHRServiceStatus status = CSHRServiceStatus.builder()
-                    .code(ErrorCode.THIRD_PARTY_SERVICE_ERROR.getCode())
-                    .summary(errorMessage)
-                    .build();
-
-            throw new ExternalApplicantTrackingSystemException(status);
+    public static void checkForError(String code) {
+        ServiceResponseStatus status = STATUSES.get(code);
+        String message =
+                status != null ? status.errorMessage : "The an external service returned an unknown status";
+        if (!SUCCESS.equals(STATUSES.get(code))) {
+            throw new ExternalApplicantTrackingSystemException(
+                    CSHRServiceStatus.builder()
+                            .code(StatusCode.THIRD_PARTY_SERVICE_ERROR.getCode())
+                            .summary(message)
+                            .build());
         }
-    }
-
-    /**
-     * Finds an instance of this enum using the given code.
-     * <p>
-     * A null will be returned if there is no matching enum.
-     *
-     * @param code instance of this enum using the given code
-     * @return ServiceResponseStatus instance of this enum for the given code
-     */
-    public static ServiceResponseStatus findByCode(String code) {
-        return STATUSES.get(code);
     }
 }

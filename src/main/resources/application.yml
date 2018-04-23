@@ -5,8 +5,23 @@ ats:
     id:
   jobrun:
     history:
-      directory:
-      file:
-  list:
-    request:
-      url:
+      directory: ./
+      file: jobRunHistory.txt
+  request:
+    batch:
+      size: 10
+    endpoint:
+cshr:
+  api:
+    service:
+      department:
+        findAll:
+          endpoint: http://localhost:8080/department
+      search:
+        username: searchusername
+        password: searchpassword
+  ats:
+    vendor:
+      id: vendorId
+server:
+  port: 10080

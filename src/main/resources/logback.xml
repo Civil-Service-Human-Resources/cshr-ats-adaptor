@@ -21,10 +21,10 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>logFile.log</File>
+        <File>${LOG_DIR:-logs}/cshr-ats-adaptor/atsAdaptorLogFile.log</File>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>logFile.%d{yyyy-MM-dd_HH-mm}.%i.log.zip</fileNamePattern>
+            <fileNamePattern>${LOG_DIR:-logs}/cshr-ats-adaptor/atsAdaptorLogFile.%d{yyyy-MM-dd_HH-mm}.%i.log.zip</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
@@ -42,7 +42,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="uk.gov.cshr.atsadaptor.controller" level="INFO" additivity="FALSE">
+    <logger name="uk.gov.cshr.atsadaptor" level="DEBUG" additivity="FALSE">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </logger>

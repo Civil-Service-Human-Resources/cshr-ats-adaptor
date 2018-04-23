@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class represents the actual data in the response for the listRequest request type on the external Applicant
- * Tracking System (ATS).
+ * This class represents the actual data in the response for the listRequest request type on the
+ * external Applicant Tracking System (ATS).
  * <p>
- * The response data for the 'listRequest' request type has the following attributes:
+ * <p>The response data for the 'listRequest' request type has the following attributes:
+ * <p>
  * <pre>
  *     <ul>
  *         <li>responseDataTimestamp</li>

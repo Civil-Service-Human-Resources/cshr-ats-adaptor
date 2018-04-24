@@ -10,7 +10,12 @@ Build this image using
 
 `make run` or `docker-compose up api`
 
+## Stopping API
 
+`make stop` or `docker-compose stop api`
+
+## Running Tests
+`make test` or `docker-compose run --rm test`
 
 ## Environment variables
 The following variables need to be set when starting the container:
@@ -29,4 +34,6 @@ The following variables need to be set when starting the container:
 1. **cshr.api.service.vacancy.save.password** - A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable. 
 1. **cshr.ats.vendor.id** - A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable.  
 1. **cshr.jobrun.audit.directory** - The directory where process audit log files are written. A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable. 
-1. **cshr.jobrun.audit.basefilename** - The basename of the process audit log filename. The system appends a datetimestamp to the base file name. A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.jobrun.audit.basefilename** - The basename of the process audit log filename. The system appends a datetimestamp to the base file name. A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable.
+1. **spring.security.service.username** - The basic auth username required to access this service. The default developer value must be overridden for all non developer environments.
+1. **spring.security.service.password** - The basic auth password required to access this service. The default developer value must be overridden for all non developer environments.

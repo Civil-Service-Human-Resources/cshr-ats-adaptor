@@ -1,23 +1,17 @@
 package uk.gov.cshr.atsadaptor.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import uk.gov.cshr.status.CSHRServiceStatus;
 
 /**
  * Defines the REST services to request vacancies from an Applicant Tracking System (ATS) to be
  * processed into the CSHR data store.
  */
-@RequestMapping(value = "/vacancies", produces = MediaType.APPLICATION_JSON_VALUE)
-@ResponseBody
-@Api(value = "vacancies")
 public interface VacanciesApi {
     /**
      * This method is the entry point for loading vacancies from the Applicant Tracking System into

@@ -11,6 +11,7 @@ ats:
     batch:
       size: 10
     endpoint:
+
 cshr:
   api:
     service:
@@ -32,5 +33,12 @@ cshr:
     audit:
       directory: ./
       basefilename: VacancyProcessor
+
+spring:
+  security:
+    service:
+      password: servicepassword
+      username: serviceusername
+
 server:
   port: 10080

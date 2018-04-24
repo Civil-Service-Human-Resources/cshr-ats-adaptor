@@ -30,7 +30,7 @@ class DefaultMapper extends DataMapper {
             result = getValue(source, fieldName);
         }
 
-        log.debug("Result of DefaultMapper mapping for " + fieldName + "is " + result);
+        log.debug("Result of DefaultMapper mapping for " + fieldName + " is " + result);
 
         return StringUtils.isNotEmpty(result) ? result : null;
     }

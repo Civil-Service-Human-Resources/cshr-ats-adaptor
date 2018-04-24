@@ -1,10 +1,14 @@
 package uk.gov.cshr.atsadaptor.service.ats.jobslist;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -75,7 +79,11 @@ public class JobsListFilter {
         Timestamp lastRunDate;
 
         try {
-            lastRunDate = new Timestamp(Files.getLastModifiedTime(historyFile).toMillis());
+            try (BufferedReader brTest = new BufferedReader(new FileReader(historyFile.toFile()))) {
+                String lastProcessedTimestamp = brTest.readLine();
+                DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                lastRunDate = Timestamp.valueOf(LocalDateTime.parse(lastProcessedTimestamp, dtf));
+            }
         } catch (IOException e) {
             CSHRServiceStatus status =
                     CSHRServiceStatus.builder()

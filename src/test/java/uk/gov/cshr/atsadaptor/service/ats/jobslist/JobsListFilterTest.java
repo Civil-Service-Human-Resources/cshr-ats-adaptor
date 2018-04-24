@@ -6,18 +6,23 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +84,12 @@ public class JobsListFilterTest {
         Files.deleteIfExists(path);
 
         Path historyFile = Files.createFile(path);
-        Files.setLastModifiedTime(historyFile, FileTime.fromMillis(lastAccessedTime));
+
+        LocalDateTime date = Instant.ofEpochMilli(lastAccessedTime)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+        String timestamp = date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        FileUtils.write(path.toFile(), timestamp, Charset.forName("UTF-8"), true);
 
         return historyFile;
     }

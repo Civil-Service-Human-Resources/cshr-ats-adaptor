@@ -18,10 +18,8 @@ public class VacanciesController implements VacanciesApi {
     private JobsListFilter jobsListFilter;
     private JobsListRetriever jobsListRetriever;
 
-    public VacanciesController(
-            CshrVacancyService cshrVacancyService,
-            JobsListFilter jobsListFilter,
-            JobsListRetriever jobsListRetriever) {
+    public VacanciesController(CshrVacancyService cshrVacancyService, JobsListFilter jobsListFilter,
+                               JobsListRetriever jobsListRetriever) {
         this.cshrVacancyService = cshrVacancyService;
         this.jobsListFilter = jobsListFilter;
         this.jobsListRetriever = jobsListRetriever;
@@ -29,12 +27,14 @@ public class VacanciesController implements VacanciesApi {
 
     @Override
     public ResponseEntity<CSHRServiceStatus> getVacancies() {
-        log.info("STARTING: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
+        log.info("STARTED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
         List<VacancyListData> liveJobs = jobsListRetriever.getLiveVacancies();
 
         List<VacancyListData> changedJobs = jobsListFilter.filter(liveJobs);
 
         cshrVacancyService.processChangedVacancies(changedJobs);
+
+        log.info("COMPLETED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
 
         return ResponseEntity.ok(
                 CSHRServiceStatus.builder().summary("Request to load vacancies received").build());

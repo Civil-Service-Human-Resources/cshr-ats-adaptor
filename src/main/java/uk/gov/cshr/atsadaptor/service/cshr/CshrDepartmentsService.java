@@ -37,8 +37,7 @@ public class CshrDepartmentsService implements DepartmentsService {
             @Value("${cshr.api.service.department.findAll.endpoint}") String findAllDepartmentsEndpoint,
             @Value("${cshr.api.service.search.username}") String cshrApiUsername,
             @Value("${cshr.api.service.search.password}") String cshrApiPassword) {
-        this.cshrRestTemplate =
-                restTemplateBuilder.basicAuthorization(cshrApiUsername, cshrApiPassword).build();
+        this.cshrRestTemplate = restTemplateBuilder.basicAuthorization(cshrApiUsername, cshrApiPassword).build();
         this.findAllDepartmentsEndpoint = findAllDepartmentsEndpoint;
     }
 

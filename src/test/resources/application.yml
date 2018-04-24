@@ -21,6 +21,10 @@ cshr:
         username: searchusername
         password: searchpassword
       vacancy:
+        findAll:
+          endpoint: http://localhost:8080/vacancy?page={page}&size={size}
+        load:
+          endpoint: http://localhost:8080/vacancy/{id}
         save:
           endpoint: http://localhost:8080/vacancy/save
           password: crudpassword

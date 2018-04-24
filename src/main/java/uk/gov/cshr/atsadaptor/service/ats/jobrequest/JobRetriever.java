@@ -45,11 +45,15 @@ public class JobRetriever {
      * @return the response containing all the data for the given jobs plus additional information
      * about the response.
      */
-    public JobRequestResponseWrapper retrieveJob(List<VacancyListData> jobs) {
+    public JobRequestResponseWrapper retrieveJobs(List<VacancyListData> jobs) {
         log.info("Retrieving full details of jobs from ATS");
 
         String[] jcodes = jobs.stream().map(VacancyListData::getJcode).toArray(String[]::new);
 
+        return retrieveJobDetails(jcodes);
+    }
+
+    private JobRequestResponseWrapper retrieveJobDetails(String[] jcodes) {
         VacancyRequest rv =
                 VacancyRequest.builder()
                         .requestType("jobRequest")
@@ -67,5 +71,11 @@ public class JobRetriever {
         log.info("Response from ATS for jobs request was successful");
 
         return vacancyData.getBody();
+    }
+
+    public JobRequestResponseWrapper retrieveJobs(String[] jcodes) {
+        log.info("Retrieving full details of a job from ATS");
+
+        return retrieveJobDetails(jcodes);
     }
 }

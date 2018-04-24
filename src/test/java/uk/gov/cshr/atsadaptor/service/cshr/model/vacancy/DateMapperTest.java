@@ -50,16 +50,6 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_dateExistsBST() throws IOException {
-        Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
-        toggleDisplayFieldValue(source, "closingdate", true);
-        Map<String, Object> field = getField(source,"closingdate");
-        field.put("value", "2020-05-01");
-
-        assertThat(mapper.map(source, "closingdate"), is(equalTo("2020-05-01T23:59:59.999+0100")));
-    }
-
-    @Test
     public void testMap_dateExistsGMT() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "closingdate", true);

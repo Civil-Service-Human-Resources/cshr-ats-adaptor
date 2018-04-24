@@ -5,3 +5,28 @@
 Build this image using
 
 `docker build -t cshr-adaptor --build-arg arg_maven_repo="https://location.of.maven.repo/nexus/content/groups/public" .
+
+## Running API
+
+`make run` or `docker-compose up api`
+
+
+
+## Environment variables
+The following variables need to be set when starting the container:
+
+1. **ats.authentication.token** - A secret authentication token required by the ATS. See administrator for this value. 
+1. **ats.client.id** - The ATS Client id that represents CSHR. See administrator for this value. 
+1. **ats.jobrun.history.directory** - A default version exists in appliction.yml.  This variable indicates the directory of the process run history file used to determine when the process was last run. If this needs to be overriden supply the value when setting this environment variable. 
+1. **ats.jobrun.history.file** - This variable indicates the directory of the process run history file used to determine when the process was last run. A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **ats.request.batch.size** - The size of the batch of records to process from ATS at one time. The maximum allowed is 100. A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable.
+1. **ats.request.endpoint** - The endpoint for the ATS system. There are two endpoints available, one for testing and one for production. See administrator for this value. 
+1. **cshr.api.service.vacancy.save.endpoint** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.api.service.department.findAll.endpoint** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.api.service.search.username** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.api.service.search.password** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.api.service.vacancy.save.username** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.api.service.vacancy.save.password** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.ats.vendor.id** - A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable.  
+1. **cshr.jobrun.audit.directory** - The directory where process audit log files are written. A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 
+1. **cshr.jobrun.audit.basefilename** - The basename of the process audit log filename. The system appends a datetimestamp to the base file name. A default version exists in appliction.yml.  If this needs to be overriden supply the value when setting this environment variable. 

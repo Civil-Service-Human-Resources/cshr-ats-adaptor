@@ -82,7 +82,8 @@ public class AtsToCshrDataMapper {
             result.put("department", departmentMapper.map(atsVacancy));
             result.put("description", defaultMapper.map(atsVacancy, "015_5070000"));
             result.put("displayCscContent", displayCscContentMapper.map(atsVacancy));
-            result.put("eligibility", defaultMapper.map(atsVacancy, "190_5070000"));
+            String eligibility = defaultMapper.map(atsVacancy, "190_5070000");
+            result.put("eligibility", eligibility != null ? eligibility : "");
             result.put("governmentOpeningDate", defaultMapper.map(atsVacancy, "startdate_across_gov"));
             result.put("grade", multiLookupMapper.map(atsVacancy, "nghr_grade"));
             result.put("internalOpeningDate", dateMapper.map(atsVacancy, "startdate_live"));

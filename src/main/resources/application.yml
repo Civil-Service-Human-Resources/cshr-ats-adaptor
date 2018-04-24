@@ -18,10 +18,19 @@ cshr:
         findAll:
           endpoint: http://localhost:8080/department
       search:
-        username: searchusername
         password: searchpassword
+        username: searchusername
+      vacancy:
+        save:
+          endpoint: http://localhost:8080/vacancy/save
+          password: crudpassword
+          username: crudusername
   ats:
     vendor:
       id: vendorId
+  jobrun:
+    audit:
+      directory: ./
+      basefilename: VacancyProcessor
 server:
   port: 10080

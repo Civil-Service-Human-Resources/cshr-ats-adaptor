@@ -1,6 +1,7 @@
 package uk.gov.cshr.atsadaptor.service.util;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import uk.gov.cshr.exception.CSHRServiceException;
@@ -12,6 +13,9 @@ public final class PathUtil {
 
     public static void createFile(Path path) {
         try {
+            if (path.toFile().exists()) {
+                Files.delete(path);
+            }
             path.toFile().createNewFile();
         } catch (IOException e) {
             CSHRServiceStatus status = CSHRServiceStatus

@@ -17,12 +17,18 @@ cshr:
       department:
         findAll:
           endpoint: http://localhost/department
-      vacancy:
-        save:
-          endpoint:
       search:
         username: searchusername
         password: searchpassword
+      vacancy:
+        save:
+          endpoint: http://localhost:8080/vacancy/save
+          password: crudpassword
+          username: crudusername
+  jobrun:
+    audit:
+      directory: ./
+      basefilename: VacancyProcessor
   ats:
     vendor:
       id: vendorId

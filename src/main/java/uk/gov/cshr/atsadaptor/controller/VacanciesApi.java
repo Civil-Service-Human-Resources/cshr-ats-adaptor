@@ -24,7 +24,7 @@ public interface VacanciesApi {
      *
      * @return information about the status of the request
      */
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "get vacancies", nickname = "getVacancies")
     @ApiResponses(
             value = {

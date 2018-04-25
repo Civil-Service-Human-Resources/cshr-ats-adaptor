@@ -50,11 +50,11 @@ class LocationsMapper extends DataMapper {
     }
 
     private boolean locationsCanBeMapped(Map<String, Object> source) {
-        return mainFieldCanBeMapped(source, MAIN_FIELD) && locationIsAbsoluteType(source);
+        return source != null && !source.isEmpty() && locationIsAbsoluteType(source);
     }
 
     private boolean locationIsAbsoluteType(Map<String, Object> source) {
-        return "ABSOLUTE".equalsIgnoreCase(getValue(source, "location_method"));
+        return "POSTCODE".equalsIgnoreCase(getValue(source, "location_method"));
     }
 
     private Map<String, Object> mapLocation(Map<String, Object> location) {

@@ -32,3 +32,8 @@ cshr:
   ats:
     vendor:
       id: vendorId
+spring:
+  security:
+    service:
+      password: servicepassword
+      username: serviceusername

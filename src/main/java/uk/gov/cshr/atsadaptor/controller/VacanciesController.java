@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListFilter;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
-import uk.gov.cshr.atsadaptor.service.cshr.CshrVacancyService;
+import uk.gov.cshr.atsadaptor.service.cshr.VacancyService;
 import uk.gov.cshr.status.CSHRServiceStatus;
 
 @RestController
 @Slf4j
 public class VacanciesController implements VacanciesApi {
-    private CshrVacancyService cshrVacancyService;
+    private VacancyService cshrVacancyService;
     private JobsListFilter jobsListFilter;
     private JobsListRetriever jobsListRetriever;
 
-    public VacanciesController(CshrVacancyService cshrVacancyService, JobsListFilter jobsListFilter,
+    public VacanciesController(VacancyService cshrVacancyService, JobsListFilter jobsListFilter,
                                JobsListRetriever jobsListRetriever) {
         this.cshrVacancyService = cshrVacancyService;
         this.jobsListFilter = jobsListFilter;

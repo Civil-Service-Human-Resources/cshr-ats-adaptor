@@ -33,7 +33,7 @@ public class VacanciesControllerTest extends AbstractJUnit4SpringContextTests {
     private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
-    private static final String REQUEST_PATH = "/vacancies";
+    private static final String REQUEST_PATH = "/vacancies/";
 
     @Inject
     private WebApplicationContext webApplicationContext;
@@ -47,7 +47,8 @@ public class VacanciesControllerTest extends AbstractJUnit4SpringContextTests {
 
     @Test
     public void getVacancies_invalidHttpVerb() throws Exception {
-        mvc.perform(post(REQUEST_PATH).contentType(APPLICATION_JSON_UTF8).content(""))
+        mvc.perform(post(REQUEST_PATH)
+                .contentType(APPLICATION_JSON_UTF8).content(""))
                 .andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
     }
 }

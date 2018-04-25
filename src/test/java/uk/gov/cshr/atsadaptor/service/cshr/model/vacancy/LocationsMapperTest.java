@@ -43,7 +43,7 @@ public class LocationsMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_notAbsoluteLocationType() throws IOException {
+    public void testMap_notPOSTCODELocationType() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "location", true);
         Map<String, Object> locationMethodField = getField(source,"location_method");
@@ -57,7 +57,7 @@ public class LocationsMapperTest extends AbstractMappingTest {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "location", true);
         Map<String, Object> locationMethodField = getField(source,"location_method");
-        locationMethodField.put("value", "ABSOLUTE");
+        locationMethodField.put("value", "POSTCODE");
 
         Map<String, Object> locationField = getField(source,"location");
         List<Map<String, Object>> locations = new ArrayList<>();

@@ -1,6 +1,5 @@
 package uk.gov.cshr.atsadaptor.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +21,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.cshr.atsadaptor.AtsAdaptorApplication;
 
@@ -36,7 +33,7 @@ public class VacanciesControllerTest extends AbstractJUnit4SpringContextTests {
     private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
-    private static final String REQUEST_PATH = "/vacancies";
+    private static final String REQUEST_PATH = "/vacancies/";
 
     @Inject
     private WebApplicationContext webApplicationContext;
@@ -52,15 +49,6 @@ public class VacanciesControllerTest extends AbstractJUnit4SpringContextTests {
     public void getVacancies_invalidHttpVerb() throws Exception {
         mvc.perform(post(REQUEST_PATH)
                 .contentType(APPLICATION_JSON_UTF8).content(""))
-                .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
-    }
-
-    @Test
-    public void getVacancies_invalidAuth() throws Exception {
-        mvc.perform(get(REQUEST_PATH)
-                .header(HttpHeaders.AUTHORIZATION,
-                "Basic " + Base64Utils.encodeToString("foo:bar".getBytes()))
-                .contentType(APPLICATION_JSON_UTF8).content(""))
-                .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
+                .andExpect(status().is(HttpStatus.METHOD_NOT_ALLOWED.value()));
     }
 }

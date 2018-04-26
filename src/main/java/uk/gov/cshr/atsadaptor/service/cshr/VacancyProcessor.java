@@ -56,8 +56,6 @@ public class VacancyProcessor {
 
     @PostConstruct
     public void init() {
-        log.info("User Name for cshrApi:" + chsrApiUsername);
-        log.info(("Password for cshrApi" + cshrApiPassword));
         cshrRestTemplate = restTemplateBuilder.basicAuthorization(chsrApiUsername, cshrApiPassword).build();
     }
 
@@ -100,9 +98,6 @@ public class VacancyProcessor {
 
             auditFileEntry = createAuditFileEntry(jobRef, response);
         } catch (Exception ex) {
-            System.out.println("******Saurabh Final Check");
-            ex.printStackTrace();
-            log.info(ex.getMessage());
             statistic = statistics.get("numberOfErrors");
             statistics.put("numberOfErrors", statistic + 1);
             auditFileEntry = createExceptionFileEntry(jobRef, ex);

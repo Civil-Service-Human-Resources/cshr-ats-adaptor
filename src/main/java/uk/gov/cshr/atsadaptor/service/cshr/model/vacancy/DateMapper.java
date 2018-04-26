@@ -32,7 +32,7 @@ class DateMapper extends DataMapper {
 
         String result = null;
 
-        if (mainFieldCanBeMapped(source, fieldName)) {
+        if (source != null && !source.isEmpty()) {
             String date = getValue(source, fieldName);
 
             if (StringUtils.isNotEmpty(date)) {

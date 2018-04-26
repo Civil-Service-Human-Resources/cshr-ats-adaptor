@@ -85,7 +85,7 @@ public class AtsToCshrDataMapper {
             result.put("displayCscContent", displayCscContentMapper.map(atsVacancy));
             String eligibility = defaultMapper.map(atsVacancy, "190_5070000");
             result.put("eligibility", eligibility != null ? eligibility : "");
-            result.put("governmentOpeningDate", defaultMapper.map(atsVacancy, "startdate_across_gov"));
+            result.put("governmentOpeningDate", dateMapper.map(atsVacancy, "startdate_across_gov"));
             result.put("grade", multiLookupMapper.map(atsVacancy, "nghr_grade"));
             result.put("internalOpeningDate", dateMapper.map(atsVacancy, "startdate_live"));
             result.put("locationOverride", defaultMapper.map(atsVacancy, "nghr_site"));
@@ -96,7 +96,7 @@ public class AtsToCshrDataMapper {
             result.put("numberVacancies", numberOfVacancies);
             result.put("overseasJob", overseasJobMapper.map(atsVacancy));
             result.put("personalSpecification", personalSpecificationMapper.map(atsVacancy));
-            result.put("publicOpeningDate", defaultMapper.map(atsVacancy, "startdate_external"));
+            result.put("publicOpeningDate", dateMapper.map(atsVacancy, "startdate_external"));
             result.put("regions", regionsMapper.map(atsVacancy));
             result.put("responsibilities", "");
             result.put("salaryMax", minimumSalaryMapper.map(atsVacancy));

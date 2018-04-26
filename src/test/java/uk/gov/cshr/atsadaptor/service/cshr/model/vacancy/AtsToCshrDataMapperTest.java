@@ -25,27 +25,27 @@ public class AtsToCshrDataMapperTest extends AbstractMappingTest {
 
     @Test
     public void testMap_nullSourceSupplied() {
-        assertThat(mapper.map(null), aMapWithSize(0));
+        assertThat(mapper.map(null, true), aMapWithSize(0));
     }
 
     @Test
     public void testMap_emptySourceSupplied() {
         Map<String, Object> source = new HashMap<>();
 
-        assertThat(mapper.map(source), aMapWithSize(0));
+        assertThat(mapper.map(source, true), aMapWithSize(0));
     }
 
     @Test
     public void testMap_vacancyNotLive() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData("/jobRequestResponses/nonLiveJobRequested.json");
 
-        assertThat(mapper.map(source), aMapWithSize(0));
+        assertThat(mapper.map(source, true), aMapWithSize(0));
     }
 
     @Test
     public void testMap_tooManyVacanciesRequested() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData("/jobRequestResponses/tooManyJobsRequested.json");
 
-        assertThat(mapper.map(source), aMapWithSize(0));
+        assertThat(mapper.map(source, true), aMapWithSize(0));
     }
 }

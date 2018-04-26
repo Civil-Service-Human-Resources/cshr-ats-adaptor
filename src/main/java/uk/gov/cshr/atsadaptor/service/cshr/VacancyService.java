@@ -1,6 +1,8 @@
 package uk.gov.cshr.atsadaptor.service.cshr;
 
+import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 
@@ -20,6 +22,24 @@ public interface VacancyService {
      * CSHR data store using the CSHR-API service.
      *
      * @param changedVacancies list of vacancies that have changed since the last run.
+     * @param auditFilePath path to the audit file
+     * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
      */
-    void processChangedVacancies(List<VacancyListData> changedVacancies);
+    void processChangedVacancies(List<VacancyListData> changedVacancies, Path auditFilePath, Map<String, Integer> statistics);
+
+    /**
+     * This method is responsible for processing the collection of vacancies in the given list of
+     * vacancies that are no longer active since the last run.
+     * <p>
+     * <p>Vacancies no longer active in this context means those that are are not in the ATS list of live vacancies
+     * <p>
+     * <p>The processing involves retrieving the full data set for each vacancy, mapping the Applicant
+     * Tracking System data model onto the CSHR data model and submitting each mapped vacancy to the
+     * CSHR data store using the CSHR-API service.
+     *
+     * @param liveJobs list of vacancies that have changed since the last run.
+     * @param auditFilePath path to the audit file
+     * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
+     */
+    void deleteNonActiveVacancies(List<VacancyListData> liveJobs, Path auditFilePath, Map<String, Integer> statistics);
 }

@@ -64,13 +64,14 @@ public class AtsToCshrDataMapper {
      * @param atsVacancy raw data from Applicant Tracking System
      * @return mapped data in the format of the CSHR data model
      */
-    public Map<String, Object> map(Map<String, Object> atsVacancy) {
+    public Map<String, Object> map(Map<String, Object> atsVacancy, boolean active) {
         log.info("Mapping data from ATS data model into the CSHR data model");
 
         Map<String, Object> result = new HashMap<>();
 
         if (atsVacancy != null && !atsVacancy.isEmpty() && responseIsSuccessful(atsVacancy)) {
             result.put("identifier", defaultMapper.map(atsVacancy, "job_reference"));
+            result.put("active", active);
             result.put("atsVendorIdentifier", atsVendorId);
             result.put("applyURL", linkToApplyMapper.map(atsVacancy));
             result.put("closingDate", dateMapper.map(atsVacancy, "closingdate"));

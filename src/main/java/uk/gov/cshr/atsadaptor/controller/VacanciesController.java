@@ -66,7 +66,7 @@ public class VacanciesController implements VacanciesApi {
 
             createAuditEntry(auditFilePath, statistics);
 
-            updateLastJobHistoryFile();
+            updateLastJobHistoryFile(changedJobs.get(changedJobs.size() - 1));
         }
 
         log.info("COMPLETED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
@@ -74,13 +74,14 @@ public class VacanciesController implements VacanciesApi {
         return ResponseEntity.ok(ResponseBuilder.buildServiceStatus(statistics));
     }
 
-    private void updateLastJobHistoryFile() {
+    private void updateLastJobHistoryFile(VacancyListData vacancyListData) {
         Path path = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
 
         PathUtil.createFile(path);
 
         try {
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            LocalDateTime lastTimestamp = vacancyListData.getVacancyTimestamp().toLocalDateTime();
+            String timestamp = lastTimestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             FileUtils.write(path.toFile(), timestamp, Charset.forName("UTF-8"), true);
         } catch (IOException e) {
             log.error("Error writing last processed timestamp to " + path.getFileName(), e);

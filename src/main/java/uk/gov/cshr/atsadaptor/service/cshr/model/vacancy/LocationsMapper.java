@@ -17,6 +17,13 @@ import org.springframework.stereotype.Component;
 class LocationsMapper extends DataMapper {
     private static final String MAIN_FIELD = "location";
 
+    private OverseasJobMapper overseasJobMapper;
+    private RegionsMapper regionsMapper;
+
+    public LocationsMapper(OverseasJobMapper overseasJobMapper, RegionsMapper regionsMapper) {
+        this.overseasJobMapper = overseasJobMapper;
+        this.regionsMapper = regionsMapper;
+    }
     /**
      * Maps the Applicant Tracking System vacancy information to the CSHR data model.
      * <p>
@@ -31,10 +38,15 @@ class LocationsMapper extends DataMapper {
 
         List<Map<String, Object>> vacancyLocations = new ArrayList<>();
 
-        if (locationsCanBeMapped(source)) {
-            List<Map<String, Object>> locations = getValue(source);
+        if (source != null && !source.isEmpty()) {
+            if (locationIsPostCode(source)) {
+                List<Map<String, Object>> locations = getValue(source);
 
-            vacancyLocations = locations.stream().map(this::mapLocation).collect(Collectors.toList());
+                vacancyLocations = locations.stream().map(this::mapLocation).collect(Collectors.toList());
+            }
+
+            addRegionIfRequired(vacancyLocations, source);
+            addOverseasIfRequired(vacancyLocations, source);
         }
 
         log.debug("Result of LocationsMapper mapping is " + vacancyLocations.toString());
@@ -49,11 +61,7 @@ class LocationsMapper extends DataMapper {
         return (List<Map<String, Object>>) field.get(VALUE);
     }
 
-    private boolean locationsCanBeMapped(Map<String, Object> source) {
-        return source != null && !source.isEmpty() && locationIsAbsoluteType(source);
-    }
-
-    private boolean locationIsAbsoluteType(Map<String, Object> source) {
+    private boolean locationIsPostCode(Map<String, Object> source) {
         return "POSTCODE".equalsIgnoreCase(getValue(source, "location_method"));
     }
 
@@ -65,5 +73,25 @@ class LocationsMapper extends DataMapper {
         mappedLocation.put("longitude", location.get("longitude"));
 
         return mappedLocation;
+    }
+
+    private void addRegionIfRequired(List<Map<String, Object>> locations, Map<String, Object> source) {
+        if (regionsMapper.locationIsRegionType(source)) {
+            locations.add(createEmptyLocation());
+        }
+    }
+
+    private Map<String, Object> createEmptyLocation() {
+        Map<String, Object> mappedLocation = new LinkedHashMap<>();
+
+        mappedLocation.put(MAIN_FIELD, "");
+
+        return mappedLocation;
+    }
+
+    private void addOverseasIfRequired(List<Map<String, Object>> locations, Map<String, Object> source) {
+        if (overseasJobMapper.isOverseasJob(source)) {
+            locations.add(createEmptyLocation());
+        }
     }
 }

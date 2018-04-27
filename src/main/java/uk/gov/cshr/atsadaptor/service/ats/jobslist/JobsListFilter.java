@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -72,6 +71,8 @@ public class JobsListFilter {
         log.debug(
                 "Found a total of " + filtered.size() + " jobs whose details are: " + filtered.toString());
 
+        filtered.sort(Comparator.comparing(VacancyListData::getVacancyTimestamp));
+
         return filtered;
     }
 
@@ -103,7 +104,6 @@ public class JobsListFilter {
         return source
                 .stream()
                 .filter(v -> v.getVacancyTimestamp().after(lastRunDate))
-                .sorted(Comparator.comparing(VacancyListData :: getVacancyTimestamp))
                 .collect(Collectors.toList());
     }
 }

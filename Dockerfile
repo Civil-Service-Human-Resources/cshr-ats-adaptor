@@ -44,4 +44,6 @@ ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/ats-adapt
             "--cshr.jobrun.audit.basefilename=${CSHR_JOBRUN_AUDIT_BASEFILENAME}", \
             "--server.port=${SERVER_PORT}", \
             "--spring.security.service.username=${SPRING_SECURITY_SERVICE_USERNAME}", \
+            "--cshr.api.service.vacancy.load.endpoint=${CSHR_API_SERVICE_VACANCY_LOAD_ENDPOINT}", \
+            "--cshr.api.service.vacancy.findAll.endpoint=${CSHR_API_SERVICE_VACANCY_FINDALL_ENDPOINT}", \
             "--spring.security.service.password=${SPRING_SECURITY_SERVICE_PASSWORD}"]

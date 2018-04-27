@@ -99,8 +99,8 @@ public class AtsToCshrDataMapper {
             result.put("publicOpeningDate", dateMapper.map(atsVacancy, "startdate_external"));
             result.put("regions", regionsMapper.map(atsVacancy));
             result.put("responsibilities", "");
-            result.put("salaryMax", minimumSalaryMapper.map(atsVacancy));
-            result.put("salaryMin", maximumSalaryMapper.map(atsVacancy));
+            result.put("salaryMax", maximumSalaryMapper.map(atsVacancy));
+            result.put("salaryMin", minimumSalaryMapper.map(atsVacancy));
             result.put("salaryOverrideDescription", salaryOverrideMapper.map(atsVacancy));
             result.put("selectionProcessDetails", selectionProcessDetailsMapper.map(atsVacancy));
             result.put("title", defaultMapper.map(atsVacancy, "vactitle"));

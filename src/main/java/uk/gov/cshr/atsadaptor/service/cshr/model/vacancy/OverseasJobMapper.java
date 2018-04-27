@@ -25,13 +25,16 @@ class OverseasJobMapper extends DataMapper {
         boolean result = false;
 
         if (source != null && !source.isEmpty()) {
-            String locationType = getValue(source, MAIN_FIELD);
-
-            result = "OVERSEAS".equalsIgnoreCase(locationType);
+            result = isOverseasJob(source);
         }
 
         log.debug("Result of OverseasJobMapper mapping is " + result);
 
         return result;
+    }
+
+    boolean isOverseasJob(Map<String, Object> source) {
+        String locationType = getValue(source, MAIN_FIELD);
+        return "OVERSEAS".equalsIgnoreCase(locationType);
     }
 }

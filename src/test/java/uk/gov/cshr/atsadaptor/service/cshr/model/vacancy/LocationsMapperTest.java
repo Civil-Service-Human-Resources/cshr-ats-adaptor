@@ -24,7 +24,7 @@ public class LocationsMapperTest extends AbstractMappingTest {
 
     @Before
     public void setup() {
-        mapper = new LocationsMapper();
+        mapper = new LocationsMapper(new OverseasJobMapper(),new RegionsMapper());
     }
 
     @After
@@ -43,13 +43,25 @@ public class LocationsMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_notPOSTCODELocationType() throws IOException {
+    public void testMap_overseasLocationType() throws IOException {
+        doEmptyRecordTest("OVERSEAS");
+    }
+
+    private void doEmptyRecordTest(String type) throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "location", true);
         Map<String, Object> locationMethodField = getField(source,"location_method");
-        locationMethodField.put("value", "REGION");
+        locationMethodField.put("value", type);
+        List<Map<String, Object>> locations = new ArrayList<>();
+        Map<String, Object> exepcted = new LinkedHashMap<>();
+        exepcted.put("location", "");
+        locations.add(exepcted);
+        assertThat(mapper.map(source), is(equalTo(locations)));
+    }
 
-        assertThat(mapper.map(source), is(empty()));
+    @Test
+    public void testMap_regionLocationType() throws IOException {
+        doEmptyRecordTest("REGION");
     }
 
     @Test

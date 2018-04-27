@@ -45,10 +45,10 @@ class RegionsMapper extends DataMapper {
     }
 
     private boolean regionsCanBeMapped(Map<String, Object> source) {
-        return mainFieldCanBeMapped(source, MAIN_FIELD) && locationIsRegionType(source);
+        return source != null && !source.isEmpty() && locationIsRegionType(source);
     }
 
-    private boolean locationIsRegionType(Map<String, Object> source) {
+    boolean locationIsRegionType(Map<String, Object> source) {
         return "REGION".equalsIgnoreCase(getValue(source, "location_method"));
     }
 

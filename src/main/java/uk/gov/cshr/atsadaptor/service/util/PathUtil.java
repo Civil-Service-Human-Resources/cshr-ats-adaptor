@@ -8,14 +8,25 @@ import uk.gov.cshr.exception.CSHRServiceException;
 import uk.gov.cshr.status.CSHRServiceStatus;
 import uk.gov.cshr.status.StatusCode;
 
+/**
+ * This class provides utility methods for working with Paths in the adaptor
+ */
 public final class PathUtil {
     private PathUtil() {}
 
-    public static void createFile(Path path) {
+    /**
+     * Creates a new file for the given path if one does not already exist.
+     *
+     * The method will throw an CSHRServicException if there are any issues working with the file.
+     *
+     * @param path location of file to be created if one does not already exist.
+     */
+    public static void createFileIfRequired(Path path) {
         try {
             if (path.toFile().exists()) {
                 Files.delete(path);
             }
+
             path.toFile().createNewFile();
         } catch (IOException e) {
             CSHRServiceStatus status = CSHRServiceStatus

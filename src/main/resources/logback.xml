@@ -37,7 +37,7 @@
         </layout>
     </appender>
 
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </root>
@@ -47,7 +47,7 @@
         <appender-ref ref="FILE" />
     </logger>
 
-    <logger name="ch.qos.logback" level="INFO" additivity="false">
+    <logger name="ch.qos.logback" level="ERROR" additivity="false">
         <appender-ref ref="CONTROLLER_LOGGER" />
     </logger>
 </configuration>

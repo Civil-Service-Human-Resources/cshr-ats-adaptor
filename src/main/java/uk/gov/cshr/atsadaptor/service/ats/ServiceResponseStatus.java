@@ -18,7 +18,9 @@ public enum ServiceResponseStatus {
     INVALID_REQUEST("The external service reported that an invalid request was received"),
     INVALID_TOKEN("The an external service reported that in invalid authorisation token was used"),
     SERVICE_BUSY("The external service reported that it was busy"),
-    SERVICE_ERROR("The an external service reported that it encountered an internal error");
+    SERVICE_ERROR("The an external service reported that it encountered an internal error"),
+    JOB_NOT_LIVE("The external service reported that the job being processed is no longer live"),
+    BATCH_LIMIT_EXCEEDED("The an external service reported that the job being processed is part of a request that has exceeded the maximum batch size of job details that can be requested from the ATS.");
 
     private static final Map<String, ServiceResponseStatus> STATUSES = new HashMap<>();
 
@@ -28,6 +30,8 @@ public enum ServiceResponseStatus {
         STATUSES.put("3", INVALID_TOKEN);
         STATUSES.put("4", SERVICE_BUSY);
         STATUSES.put("5", SERVICE_ERROR);
+        STATUSES.put("6", JOB_NOT_LIVE);
+        STATUSES.put("7", BATCH_LIMIT_EXCEEDED);
     }
 
     private String errorMessage;

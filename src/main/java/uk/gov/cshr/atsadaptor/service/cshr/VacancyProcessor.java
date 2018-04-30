@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.cshr.atsadaptor.service.ats.ServiceResponseStatus;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.JobRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.model.JobRequestResponseWrapper;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
@@ -44,6 +45,7 @@ import uk.gov.cshr.status.StatusCode;
 @Slf4j
 public class VacancyProcessor {
     private static final String HYPHEN = " - ";
+    private static final String VACANCY_WITH_REFERENCE = "Vacancy with reference";
 
     private RestTemplate cshrRestTemplate;
     private RestTemplate cshrSearchRestTemplate;
@@ -74,6 +76,7 @@ public class VacancyProcessor {
         this.jobRetriever = jobRetriever;
         this.restTemplateBuilder = restTemplateBuilder;
     }
+
     @PostConstruct
     public void init() {
         cshrRestTemplate = restTemplateBuilder.basicAuthorization(chsrApiUsername, cshrApiPassword).build();
@@ -96,49 +99,45 @@ public class VacancyProcessor {
                 .forEach(v -> processVacancy(v, auditFile, historyFile, jobs, statistics));
     }
 
-    private void processVacancy(Map<String, Object> sourceVacancyData, Path auditFile, Path historyFile, 
+    private void processVacancy(Map<String, Object> sourceVacancyData, Path auditFile, Path historyFile,
                                 List<VacancyListData> jobs, Map<String, Integer> statistics) {
         String auditFileEntry;
+        String jobRef = null;
+
         try {
             Map<String, Object> fields = (Map<String, Object>) sourceVacancyData.get("field");
-            String jobRef = (String) ((Map<String, Object>) fields.get("job_reference")).get("value");
-
+            jobRef = (String) ((Map<String, Object>) fields.get("job_reference")).get("value");
             log.info("Processing a vacancy with job Reference = " + jobRef);
 
+            checkResponseStatus(sourceVacancyData);
 
-            try {
-                Map<String, Object> mappedVacancy = dataMapper.map(sourceVacancyData, true);
-                ResponseEntity<CSHRServiceStatus> response = cshrRestTemplate.postForEntity(chsrSaveVacancyEndpoint,
-                        mappedVacancy, CSHRServiceStatus.class);
+            Map<String, Object> mappedVacancy = dataMapper.map(sourceVacancyData, true);
+            ResponseEntity<CSHRServiceStatus> response = cshrRestTemplate.postForEntity(chsrSaveVacancyEndpoint,
+                    mappedVacancy, CSHRServiceStatus.class);
 
-                if (StatusCode.RECORD_CREATED.getCode().equals(response.getBody().getCode())) {
-                    incrementStatistic(statistics, StatisticsKeyNames.NUMBER_CREATED);
-                } else {
-                    incrementStatistic(statistics, StatisticsKeyNames.NUMBER_SAVED);
-                }
-
-                auditFileEntry = createAuditFileEntry(jobRef, response);
-                updateJobHistoryFile(jobRef, historyFile, jobs);
-            } catch (Exception ex) {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-                auditFileEntry = createExceptionFileEntry(jobRef, ex);
+            if (StatusCode.RECORD_CREATED.getCode().equals(response.getBody().getCode())) {
+                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_CREATED);
+            } else {
+                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_SAVED);
             }
 
-            writeAuditFileEntry(auditFile, jobRef, auditFileEntry);
-        } catch(Exception ex) {
+            auditFileEntry = createAuditFileEntry(jobRef, response);
+            updateJobHistoryFile(jobRef, historyFile, jobs);
+        } catch (CSHRServiceException ex) {
             incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-            log.error("An error occurred trying to process a vacancy. The content of the source data was: " + sourceVacancyData.toString(), ex);
-            CSHRServiceStatus status = CSHRServiceStatus
-                    .builder()
-                    .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
-                    .summary(ex.getMessage())
-                    .build();
-
-            throw CSHRServiceException
-                    .builder()
-                    .cshrServiceStatus(status)
-                    .build();
+            auditFileEntry = createExceptionFileStatusEntry(jobRef, ex.getCshrServiceStatus());
+        } catch (Exception ex) {
+            incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
+            auditFileEntry = createExceptionFileEntry(jobRef, ex);
         }
+
+        writeAuditFileEntry(auditFile, jobRef, auditFileEntry);
+    }
+
+    private void checkResponseStatus(Map<String, Object> sourceVacancyData) {
+        String code = String.valueOf(((Double) sourceVacancyData.get("vacancyResponseStatus")).intValue());
+
+        ServiceResponseStatus.checkForError(code);
     }
 
     private void incrementStatistic(Map<String, Integer> statistics, String statisticKey) {
@@ -158,7 +157,7 @@ public class VacancyProcessor {
     private String createAuditFileEntry(String jobRef, ResponseEntity<CSHRServiceStatus> response) {
         StringBuilder output = new StringBuilder();
 
-        output.append("Vacancy with reference ")
+        output.append(VACANCY_WITH_REFERENCE)
                 .append(jobRef)
                 .append(" has been processed: An HTTPStatus with a code of ")
                 .append(response.getStatusCodeValue());
@@ -185,13 +184,25 @@ public class VacancyProcessor {
         return output.toString();
     }
 
+    private String createExceptionFileStatusEntry(String jobRef, CSHRServiceStatus status) {
+        return createExceptionEntry(jobRef, status.getSummary());
+    }
+
+    private String createExceptionEntry(String jobRef, String summary) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(VACANCY_WITH_REFERENCE);
+
+        if (jobRef != null) {
+            builder.append(" ").append(jobRef);
+        } else {
+            builder.append(" unknown ");
+        }
+
+        return builder.append(summary).append(System.lineSeparator()).append(System.lineSeparator()).toString();
+    }
+
     private String createExceptionFileEntry(String jobRef, Exception ex) {
-        return "Vacancy with "
-                + jobRef
-                + " has been processed and encountered an exception: "
-                + ex.getMessage()
-                + System.lineSeparator()
-                + System.lineSeparator();
+        return createExceptionEntry(jobRef, ex.getMessage());
     }
 
     public void deleteVacancies(List<String> vacancies, Path auditFile, Map<String, Integer> statistics) {

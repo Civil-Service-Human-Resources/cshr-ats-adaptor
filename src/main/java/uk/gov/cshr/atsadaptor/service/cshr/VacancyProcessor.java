@@ -2,7 +2,11 @@ package uk.gov.cshr.atsadaptor.service.cshr;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +30,8 @@ import uk.gov.cshr.atsadaptor.service.ats.jobrequest.model.JobRequestResponseWra
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
 import uk.gov.cshr.atsadaptor.service.cshr.model.vacancy.AtsToCshrDataMapper;
+import uk.gov.cshr.atsadaptor.service.util.PathUtil;
+import uk.gov.cshr.exception.CSHRServiceException;
 import uk.gov.cshr.status.CSHRServiceStatus;
 import uk.gov.cshr.status.StatusCode;
 
@@ -55,6 +61,10 @@ public class VacancyProcessor {
     private String cshrApiSearchUsername;
     @Value("${cshr.api.service.search.password}")
     private String cshrApiSearchPassword;
+    @Value("${ats.jobrun.history.directory}")
+    private String historyFileDirectory;
+    @Value("${ats.jobrun.history.file}")
+    private String historyFileName;
     @Value("${cshr.api.service.vacancy.load.endpoint}")
     private String loadVacancyEndpoint;
 
@@ -78,38 +88,57 @@ public class VacancyProcessor {
      */
     public void process(List<VacancyListData> jobs, Path auditFile, Map<String, Integer> statistics) {
         log.info("Starting to process a batch of jobs");
+        Path historyFile = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
 
         JobRequestResponseWrapper jobsData = jobRetriever.retrieveJobs(jobs);
 
         jobsData.getVacancyResponse().getResponseData().getVacancy()
-                .forEach(v -> processVacancy(v, auditFile, statistics));
+                .forEach(v -> processVacancy(v, auditFile, historyFile, jobs, statistics));
     }
 
-    private void processVacancy(Map<String, Object> sourceVacancyData, Path auditFile, Map<String, Integer> statistics) {
-        Map<String, Object> fields = (Map<String, Object>) sourceVacancyData.get("field");
-        String jobRef = (String) ((Map<String, Object>) fields.get("job_reference")).get("value");
-
-        log.info("Processing a vacancy with job Reference = " + jobRef);
-
+    private void processVacancy(Map<String, Object> sourceVacancyData, Path auditFile, Path historyFile, 
+                                List<VacancyListData> jobs, Map<String, Integer> statistics) {
         String auditFileEntry;
         try {
-            Map<String, Object> mappedVacancy = dataMapper.map(sourceVacancyData, true);
-            ResponseEntity<CSHRServiceStatus> response = cshrRestTemplate.postForEntity(chsrSaveVacancyEndpoint,
-                    mappedVacancy, CSHRServiceStatus.class);
+            Map<String, Object> fields = (Map<String, Object>) sourceVacancyData.get("field");
+            String jobRef = (String) ((Map<String, Object>) fields.get("job_reference")).get("value");
 
-            if (StatusCode.RECORD_CREATED.getCode().equals(response.getBody().getCode())) {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_CREATED);
-            } else {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_SAVED);
+            log.info("Processing a vacancy with job Reference = " + jobRef);
+
+
+            try {
+                Map<String, Object> mappedVacancy = dataMapper.map(sourceVacancyData, true);
+                ResponseEntity<CSHRServiceStatus> response = cshrRestTemplate.postForEntity(chsrSaveVacancyEndpoint,
+                        mappedVacancy, CSHRServiceStatus.class);
+
+                if (StatusCode.RECORD_CREATED.getCode().equals(response.getBody().getCode())) {
+                    incrementStatistic(statistics, StatisticsKeyNames.NUMBER_CREATED);
+                } else {
+                    incrementStatistic(statistics, StatisticsKeyNames.NUMBER_SAVED);
+                }
+
+                auditFileEntry = createAuditFileEntry(jobRef, response);
+                updateJobHistoryFile(jobRef, historyFile, jobs);
+            } catch (Exception ex) {
+                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
+                auditFileEntry = createExceptionFileEntry(jobRef, ex);
             }
 
-            auditFileEntry = createAuditFileEntry(jobRef, response);
-        } catch (Exception ex) {
+            writeAuditFileEntry(auditFile, jobRef, auditFileEntry);
+        } catch(Exception ex) {
             incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-            auditFileEntry = createExceptionFileEntry(jobRef, ex);
-        }
+            log.error("An error occurred trying to process a vacancy. The content of the source data was: " + sourceVacancyData.toString(), ex);
+            CSHRServiceStatus status = CSHRServiceStatus
+                    .builder()
+                    .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
+                    .summary(ex.getMessage())
+                    .build();
 
-        writeAuditFileEntry(auditFile, jobRef, auditFileEntry);
+            throw CSHRServiceException
+                    .builder()
+                    .cshrServiceStatus(status)
+                    .build();
+        }
     }
 
     private void incrementStatistic(Map<String, Integer> statistics, String statisticKey) {
@@ -228,5 +257,27 @@ public class VacancyProcessor {
         output.append(System.lineSeparator()).append(System.lineSeparator());
 
         return output.toString();
+    }
+
+    // Only when a job is successfully processed is it's timestamp used in the history file.
+    private void updateJobHistoryFile(String jobRef, Path historyFile, List<VacancyListData> jobs) {
+        Timestamp timestamp = jobs
+                .stream()
+                .filter(j -> j.getJcode().equals(jobRef))
+                .map(VacancyListData :: getVacancyTimestamp)
+                .findFirst()
+                .orElse(null);
+
+        if (timestamp != null) {
+            PathUtil.createFileIfRequired(historyFile);
+
+            try {
+                LocalDateTime lastTimestamp = timestamp.toLocalDateTime();
+                String result = lastTimestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                FileUtils.write(historyFile.toFile(), result, Charset.forName("UTF-8"), false);
+            } catch (IOException e) {
+                log.error("Error writing last processed timestamp to " + historyFile.getFileName(), e);
+            }
+        }
     }
 }

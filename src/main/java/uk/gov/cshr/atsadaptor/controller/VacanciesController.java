@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListFilter;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
+import uk.gov.cshr.atsadaptor.service.cshr.VacancyService;
 import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
 import uk.gov.cshr.atsadaptor.service.util.PathUtil;
-import uk.gov.cshr.atsadaptor.service.cshr.VacancyService;
 import uk.gov.cshr.status.CSHRServiceStatus;
 
 @RestController
@@ -65,30 +65,11 @@ public class VacanciesController implements VacanciesApi {
             vacancyService.processChangedVacancies(changedJobs, auditFilePath, statistics);
 
             createAuditEntry(auditFilePath, statistics);
-
-            updateLastJobHistoryFile(changedJobs);
         }
 
         log.info("COMPLETED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
 
         return ResponseEntity.ok(ResponseBuilder.buildServiceStatus(statistics));
-    }
-
-    private void updateLastJobHistoryFile(List<VacancyListData> changedJobs) {
-        if (changedJobs != null && !changedJobs.isEmpty()) {
-            VacancyListData lastJob = changedJobs.get(changedJobs.size() - 1);
-            Path path = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
-
-            PathUtil.createFile(path);
-
-            try {
-                LocalDateTime lastTimestamp = lastJob.getVacancyTimestamp().toLocalDateTime();
-                String timestamp = lastTimestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                FileUtils.write(path.toFile(), timestamp, Charset.forName("UTF-8"), true);
-            } catch (IOException e) {
-                log.error("Error writing last processed timestamp to " + path.getFileName(), e);
-            }
-        }
     }
 
     private Map<String, Integer> createStatisticsMap() {
@@ -110,9 +91,8 @@ public class VacanciesController implements VacanciesApi {
                 + ".log";
 
         Path path = FileSystems.getDefault().getPath(auditFileDirectory, fileName);
-
-
-        PathUtil.createFile(path);
+        
+        PathUtil.createFileIfRequired(path);
 
         return path;
     }

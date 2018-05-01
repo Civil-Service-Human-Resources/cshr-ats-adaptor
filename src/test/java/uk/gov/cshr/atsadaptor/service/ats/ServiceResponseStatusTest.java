@@ -57,7 +57,19 @@ public class ServiceResponseStatusTest {
     }
 
     @Test
+    public void checkForError_notInLiveVacancySet() {
+        doExceptionTest("6", "The external service reported that the job being processed is no longer live");
+    }
+
+    @Test
+    public void checkForError_beyoneMaxBatchSize() {
+        doExceptionTest("7", "The an external service reported that the job being processed is part " +
+                "of a request that has exceeded the maximum batch size of job details that can be requested from the " +
+                "ATS.");
+    }
+
+    @Test
     public void checkForError_unknownStatus() {
-        doExceptionTest("6", "The an external service returned an unknown status");
+        doExceptionTest("8", "The an external service returned an unknown status");
     }
 }

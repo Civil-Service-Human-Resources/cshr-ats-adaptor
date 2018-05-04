@@ -72,4 +72,39 @@ public class ServiceResponseStatusTest {
     public void checkForError_unknownStatus() {
         doExceptionTest("8", "The an external service returned an unknown status");
     }
+
+    @Test
+    public void getMessage_SUCCESS() {
+        assertThat(ServiceResponseStatus.SUCCESS.getErrorMessage(), is(equalTo("The external service reported that an invalid request was received")));
+    }
+
+    @Test
+    public void getMessage_INVALID_REQUEST() {
+        assertThat(ServiceResponseStatus.INVALID_REQUEST.getErrorMessage(), is(equalTo("The external service reported that an invalid request was received")));
+    }
+
+    @Test
+    public void getMessage_INVALID_TOKEN() {
+        assertThat(ServiceResponseStatus.INVALID_TOKEN.getErrorMessage(), is(equalTo("The an external service reported that in invalid authorisation token was used")));
+    }
+
+    @Test
+    public void getMessage_SERVICE_BUSY() {
+        assertThat(ServiceResponseStatus.SERVICE_BUSY.getErrorMessage(), is(equalTo("The external service reported that it was busy")));
+    }
+
+    @Test
+    public void getMessage_SERVICE_ERROR() {
+        assertThat(ServiceResponseStatus.SERVICE_ERROR.getErrorMessage(), is(equalTo("The an external service reported that it encountered an internal error")));
+    }
+
+    @Test
+    public void getMessage_JOB_NOT_LIVE() {
+        assertThat(ServiceResponseStatus.JOB_NOT_LIVE.getErrorMessage(), is(equalTo("The external service reported that the job being processed is no longer live")));
+    }
+
+    @Test
+    public void getMessage_BATCH_LIMIT_EXCEEDED() {
+        assertThat(ServiceResponseStatus.BATCH_LIMIT_EXCEEDED.getErrorMessage(), is(equalTo("The an external service reported that the job being processed is part of a request that has exceeded the maximum batch size of job details that can be requested from the ATS.")));
+    }
 }

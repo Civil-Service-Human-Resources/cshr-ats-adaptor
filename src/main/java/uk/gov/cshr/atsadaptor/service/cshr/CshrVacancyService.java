@@ -68,11 +68,15 @@ public class CshrVacancyService implements VacancyService {
     }
 
     @Override
-    public void processChangedVacancies(List<VacancyListData> changedVacancies, Path auditFilePath, Map<String, Integer> statistics) {
+    public List<String> processChangedVacancies(List<VacancyListData> changedVacancies,
+                                                         List<String> jobsNoLongerActive, Path auditFilePath,
+                                                         Map<String, Integer> statistics) {
         log.info("Processing batches of vacancies that have changed since the last run.");
 
         Iterables.partition(changedVacancies, atsRequestBatchSize)
-                .forEach(batch -> vacancyProcessor.process(batch, auditFilePath, statistics));
+                .forEach(batch -> vacancyProcessor.process(batch, jobsNoLongerActive, auditFilePath, statistics));
+
+        return jobsNoLongerActive;
     }
 
     /**
@@ -92,11 +96,13 @@ public class CshrVacancyService implements VacancyService {
      * it in the CSHR data store.
      * @param liveJobs the list of jobs that are live in the ATS.
      */
-    public void deleteNonActiveVacancies(List<VacancyListData> liveJobs, Path auditFilePath, Map<String, Integer> statistics) {
+    public void deleteNonActiveVacancies(List<VacancyListData> liveJobs, List<String> jobsNoLongerActive,
+                                         Path auditFilePath, Map<String, Integer> statistics) {
         log.info("Starting to search for vacancies that are no longer active in the ATS");
         boolean inProgress = true;
 
         Set<String> liveVacancyIdentifiers = liveJobs.stream().map(VacancyListData :: getJcode).collect(Collectors.toSet());
+        liveVacancyIdentifiers.removeAll(jobsNoLongerActive);
 
         Map<String, String> params = new HashMap<>();
         params.put("size", String.valueOf(atsRequestBatchSize));

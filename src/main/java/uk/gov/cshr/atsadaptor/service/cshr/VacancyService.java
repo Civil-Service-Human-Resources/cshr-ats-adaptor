@@ -22,10 +22,12 @@ public interface VacancyService {
      * CSHR data store using the CSHR-API service.
      *
      * @param changedVacancies list of vacancies that have changed since the last run.
+     * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      * @param auditFilePath path to the audit file
      * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
+     * @return list of jobs that are in changedVacancies list but are no longer active by the time they are processed
      */
-    void processChangedVacancies(List<VacancyListData> changedVacancies, Path auditFilePath, Map<String, Integer> statistics);
+    List<String> processChangedVacancies(List<VacancyListData> changedVacancies, List<String> jobsNoLongerActive, Path auditFilePath, Map<String, Integer> statistics);
 
     /**
      * This method is responsible for processing the collection of vacancies in the given list of
@@ -38,8 +40,9 @@ public interface VacancyService {
      * CSHR data store using the CSHR-API service.
      *
      * @param liveJobs list of vacancies that have changed since the last run.
+     * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      * @param auditFilePath path to the audit file
      * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
      */
-    void deleteNonActiveVacancies(List<VacancyListData> liveJobs, Path auditFilePath, Map<String, Integer> statistics);
+    void deleteNonActiveVacancies(List<VacancyListData> liveJobs, List<String> jobsNoLongerActive, Path auditFilePath, Map<String, Integer> statistics);
 }

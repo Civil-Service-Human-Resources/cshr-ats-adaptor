@@ -49,11 +49,20 @@ public enum ServiceResponseStatus {
         String message =
                 status != null ? status.errorMessage : "The an external service returned an unknown status";
         if (!SUCCESS.equals(STATUSES.get(code))) {
-            throw new ExternalApplicantTrackingSystemException(
+            throw new ExternalApplicantTrackingSystemException (
                     CSHRServiceStatus.builder()
                             .code(StatusCode.THIRD_PARTY_SERVICE_ERROR.getCode())
                             .summary(message)
                             .build());
         }
+    }
+
+    /**
+     * Gets the error message for this enum.
+     *
+     * @return error message for this enum
+     */
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

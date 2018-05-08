@@ -105,8 +105,7 @@ public class VacanciesController implements VacanciesApi {
         Integer numDeleted = statistics.get(StatisticsKeyNames.NUMBER_DELETED);
 
         if (numSaved.compareTo(0) > 0) {
-            numSaved = numSaved - numDeleted;
-            statistics.put(StatisticsKeyNames.NUMBER_SAVED, numSaved - numDeleted);
+            statistics.put(StatisticsKeyNames.NUMBER_SAVED, numSaved);
         }
 
         statistics.put(StatisticsKeyNames.NUMBER_PROCESSED, numProcessed + numDeleted);

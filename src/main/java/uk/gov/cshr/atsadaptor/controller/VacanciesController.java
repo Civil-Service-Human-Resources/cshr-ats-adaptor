@@ -6,6 +6,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,14 +56,15 @@ public class VacanciesController implements VacanciesApi {
         if (!liveJobs.isEmpty()) {
             Path auditFilePath = createAuditFile();
 
-            vacancyService.deleteNonActiveVacancies(liveJobs, auditFilePath, statistics);
-
             List<VacancyListData> changedJobs = jobsListFilter.filter(liveJobs);
 
             Integer numToProcess = statistics.get(StatisticsKeyNames.NUMBER_PROCESSED);
             statistics.put(StatisticsKeyNames.NUMBER_PROCESSED, numToProcess + changedJobs.size());
 
-            vacancyService.processChangedVacancies(changedJobs, auditFilePath, statistics);
+            List<String> jobsNoLongerActive = new ArrayList<>();
+            vacancyService.processChangedVacancies(changedJobs, jobsNoLongerActive, auditFilePath, statistics);
+
+            vacancyService.deleteNonActiveVacancies(liveJobs, jobsNoLongerActive, auditFilePath, statistics);
 
             createAuditEntry(auditFilePath, statistics);
         }

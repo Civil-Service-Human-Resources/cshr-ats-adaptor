@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
 import uk.gov.cshr.atsadaptor.service.ats.ServiceResponseStatus;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.JobRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.model.JobRequestResponseWrapper;
@@ -32,7 +33,6 @@ import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
 import uk.gov.cshr.atsadaptor.service.cshr.model.vacancy.AtsToCshrDataMapper;
 import uk.gov.cshr.atsadaptor.service.util.PathUtil;
-import uk.gov.cshr.exception.CSHRServiceException;
 import uk.gov.cshr.status.CSHRServiceStatus;
 import uk.gov.cshr.status.StatusCode;
 
@@ -88,19 +88,21 @@ public class VacancyProcessor {
      * and mapping onto the CSHR data model for submission to the data store.
      *
      * @param jobs jobs to be processed
+     * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      */
-    public void process(List<VacancyListData> jobs, Path auditFile, Map<String, Integer> statistics) {
+    public void process(List<VacancyListData> jobs, List<String> jobsNoLongerActive, Path auditFile,
+                        Map<String, Integer> statistics) {
         log.info("Starting to process a batch of jobs");
         Path historyFile = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
 
         JobRequestResponseWrapper jobsData = jobRetriever.retrieveJobs(jobs);
 
         jobsData.getVacancyResponse().getResponseData().getVacancy()
-                .forEach(v -> processVacancy(v, auditFile, historyFile, jobs, statistics));
+                .forEach(v -> processVacancy(v, jobsNoLongerActive, auditFile, historyFile, jobs, statistics));
     }
 
-    private void processVacancy(Map<String, Object> sourceVacancyData, Path auditFile, Path historyFile,
-                                List<VacancyListData> jobs, Map<String, Integer> statistics) {
+    private void processVacancy(Map<String, Object> sourceVacancyData, List<String> jobsNoLongerActive, Path auditFile,
+                                Path historyFile, List<VacancyListData> jobs, Map<String, Integer> statistics) {
         String auditFileEntry;
         String jobRef = null;
 
@@ -123,7 +125,10 @@ public class VacancyProcessor {
 
             auditFileEntry = createAuditFileEntry(jobRef, response);
             updateJobHistoryFile(jobRef, historyFile, jobs);
-        } catch (CSHRServiceException ex) {
+        } catch (ExternalApplicantTrackingSystemException ex) {
+            if (ServiceResponseStatus.JOB_NOT_LIVE.getErrorMessage().equals(ex.getCshrServiceStatus().getSummary())) {
+                jobsNoLongerActive.add(jobRef);
+            }
             incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
             auditFileEntry = createExceptionFileStatusEntry(jobRef, ex.getCshrServiceStatus());
         } catch (Exception ex) {

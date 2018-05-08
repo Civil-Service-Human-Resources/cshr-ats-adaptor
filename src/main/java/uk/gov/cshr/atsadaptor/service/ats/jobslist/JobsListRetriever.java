@@ -1,5 +1,6 @@
 package uk.gov.cshr.atsadaptor.service.ats.jobslist;
 
+import java.nio.file.Path;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,11 +9,13 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
 import uk.gov.cshr.atsadaptor.service.ats.ServiceResponseStatus;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListResponseWrapper;
 import uk.gov.cshr.atsadaptor.service.ats.request.VacancyRequest;
 import uk.gov.cshr.atsadaptor.service.ats.request.VacancyRequestWrapper;
+import uk.gov.cshr.atsadaptor.service.cshr.AuditFileProcessor;
 
 /**
  * This class is responsible for retrieving a list of live vacancies from a Applicant Tracking
@@ -21,19 +24,19 @@ import uk.gov.cshr.atsadaptor.service.ats.request.VacancyRequestWrapper;
 @Component
 @Slf4j
 public class JobsListRetriever {
-    private String atsRequestEndpoint;
-    private String authenticationToken;
-    private String clientId;
+    private AuditFileProcessor auditFileProcessor;
     private RestTemplate restTemplate;
 
-    public JobsListRetriever(
-            RestTemplateBuilder restTemplateBuilder,
-            @Value("${ats.request.endpoint}") String atsRequestEndpoint,
-            @Value("${ats.authentication.token}") String authenticationToken,
-            @Value("${ats.client.id}") String clientId) {
-        this.atsRequestEndpoint = atsRequestEndpoint;
-        this.authenticationToken = authenticationToken;
-        this.clientId = clientId;
+    @Value("${ats.request.endpoint}")
+    private String atsRequestEndpoint;
+    @Value("${ats.authentication.token}")
+    private String authenticationToken;
+    @Value("${ats.client.id}")
+    private String clientId;
+
+    public JobsListRetriever(AuditFileProcessor auditFileProcessor,
+                             RestTemplateBuilder restTemplateBuilder) {
+        this.auditFileProcessor = auditFileProcessor;
         this.restTemplate = restTemplateBuilder.build();
     }
 
@@ -45,7 +48,7 @@ public class JobsListRetriever {
      *
      * @return List<VacancyListData> list of live vacancies
      */
-    public List<VacancyListData> getLiveVacancies() {
+    public List<VacancyListData> getLiveVacancies(Path auditFilePath) {
         log.info("Retrieving the list of live vacancies from the ATS");
 
         VacancyRequest rv =
@@ -56,10 +59,16 @@ public class JobsListRetriever {
                         .build();
 
         VacancyRequestWrapper request = VacancyRequestWrapper.builder().vacancyRequest(rv).build();
-        ResponseEntity<VacancyListResponseWrapper> response =
-                restTemplate.postForEntity(atsRequestEndpoint, request, VacancyListResponseWrapper.class);
+        ResponseEntity<VacancyListResponseWrapper> response = restTemplate.postForEntity(atsRequestEndpoint,
+                request, VacancyListResponseWrapper.class);
 
-        ServiceResponseStatus.checkForError(response.getBody().getVacancyResponse().getStatusCode());
+        try {
+            ServiceResponseStatus.checkForError(response.getBody().getVacancyResponse().getStatusCode());
+        } catch (ExternalApplicantTrackingSystemException ex) {
+            auditFileProcessor.writeAuditFileEntry(auditFilePath, "N/a", ex.getCshrServiceStatus().getSummary());
+
+            throw ex;
+        }
 
         log.debug("Response from ATS was successful");
 

@@ -2,9 +2,9 @@ package uk.gov.cshr.atsadaptor.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
+import org.apache.commons.lang3.StringUtils;
+import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 import uk.gov.cshr.status.CSHRServiceStatus;
 import uk.gov.cshr.status.StatusCode;
 
@@ -13,19 +13,28 @@ import uk.gov.cshr.status.StatusCode;
  * of different channels
  */
 public final class ResponseBuilder {
+    private static final String A_TOTAL_OF_OF = "A total of of ";
+    private static final String NUMBER_OF_VACANCIES_CREATED = "Number of vacancies created in in the CSHR data store        : ";
+    private static final String NUMBER_OF_VACANCIES_DELETED = "Number of vacancies marked as deleted in the CSHR data store : ";
+    private static final String NUMBER_OF_VACANCIES_WITH_ERRORS = "Number of vacancies that had an error during processing      : ";
+    private static final String NUMBER_OF_VACANCIES_SAVED = "Number of vacancies saved in the CSHR data store             : ";
+    private static final String TOTAL_PROCESSING_TIME = "Total time taken to process the vacancies                    : ";
+    private static final String VACANCIES_HAVE_CHANGED_TEXT = " vacancies have changed or became inactive in the ATS since the last run and were processed of which:";
+
     private ResponseBuilder() {}
 
     /**
      * Builds the instance of service status to be returned in a REST response.
      *
-     * @param statistics totals of vacancies processed by category
+     * @param processStatistics totals of vacancies processed by category
      * @return nstance of service status to be returned in a REST response
      */
-    static CSHRServiceStatus buildServiceStatus(Map<String, Integer> statistics) {
+    static CSHRServiceStatus buildServiceStatus(ProcessStatistics processStatistics) {
         String summary;
         StatusCode code;
 
-        if (statistics.get(StatisticsKeyNames.NUMBER_OF_ERRORS).compareTo(0) > 0) {
+        Integer numberOfErrors = processStatistics.getNumErrors();
+        if (numberOfErrors > 0) {
             code = StatusCode.PROCESS_COMPLETED_WITH_ERRORS;
             summary = "A request to load vacancies was received and completed successfully with at lease one error reported.";
         } else {
@@ -36,51 +45,58 @@ public final class ResponseBuilder {
         return CSHRServiceStatus.builder()
                 .code(code.getCode())
                 .summary(summary)
-                .detail(createDetails(statistics))
+                .detail(createDetails(processStatistics))
                 .build();
     }
 
-    private static List<String> createDetails(Map<String, Integer> statistics) {
+    private static List<String> createDetails(ProcessStatistics processStatistics) {
         List<String> details = new ArrayList<>();
 
-        details.add("A total of of " +
-                statistics.get(StatisticsKeyNames.NUMBER_PROCESSED) +
-                " vacancies have changed or became inactive in the ATS since the last run and were processed of which:");
-        details.add("Number of vacancies created in in the CSHR data store        : " +
-                statistics.get(StatisticsKeyNames.NUMBER_CREATED));
-        details.add("Number of vacancies saved in the CSHR data store             : " +
-                statistics.get(StatisticsKeyNames.NUMBER_SAVED));
-        details.add("Number of vacancies marked as deleted in the CSHR data store : " +
-                statistics.get(StatisticsKeyNames.NUMBER_DELETED));
-        details.add("Number of vacancies that had an error during processing      : " +
-                statistics.get(StatisticsKeyNames.NUMBER_OF_ERRORS));
+        details.add(A_TOTAL_OF_OF + processStatistics.getNumProcessed() + VACANCIES_HAVE_CHANGED_TEXT);
+        details.add(NUMBER_OF_VACANCIES_CREATED + processStatistics.getNumCreated());
+        details.add(NUMBER_OF_VACANCIES_SAVED + processStatistics.getNumChanged());
+        details.add(NUMBER_OF_VACANCIES_DELETED + processStatistics.getNumDeleted());
+        details.add(NUMBER_OF_VACANCIES_WITH_ERRORS + processStatistics.getNumErrors());
+        details.add(TOTAL_PROCESSING_TIME + processStatistics.formattedElapsedTime());
 
         return details;
     }
 
-    static String buildLogEntry(Map<String, Integer> statistics) {
-        String summary = statistics.get(StatisticsKeyNames.NUMBER_OF_ERRORS).compareTo(0) > 0
+    public static String buildLogEntry(ProcessStatistics processStatistics) {
+        Integer numberOfErrors = processStatistics.getNumErrors();
+        String separator = StringUtils.repeat("=", 138);
+        String summary = numberOfErrors.compareTo(0) > 0
             ? "A request to load vacancies was received and completed successfully with at lease one error reported. Status code was " +
                 StatusCode.PROCESS_COMPLETED_WITH_ERRORS.getCode()
             : "A request to load vacancies was received and completed successfully with no errors reported. Status code was " +
                 StatusCode.PROCESS_COMPLETED.getCode();
 
-        return summary
+        return separator
                 + System.lineSeparator()
-                + "A total of of "
-                + statistics.get(StatisticsKeyNames.NUMBER_PROCESSED)
-                + " vacancies have changed or became inactive in the ATS since the last run and were processed of which:"
+                + "SUMMARY OF VACANCY LOAD PROCESS"
                 + System.lineSeparator()
-                + "Number of vacancies created in in the CSHR data store        : "
-                + statistics.get(StatisticsKeyNames.NUMBER_CREATED)
+                + separator
                 + System.lineSeparator()
-                + "Number of vacancies saved in the CSHR data store             : "
-                + statistics.get(StatisticsKeyNames.NUMBER_SAVED)
+                + summary
                 + System.lineSeparator()
-                + "Number of vacancies marked as deleted in the CSHR data store : "
-                + statistics.get(StatisticsKeyNames.NUMBER_DELETED)
                 + System.lineSeparator()
-                + "Number of vacancies that had an error during processing      : "
-                + statistics.get(StatisticsKeyNames.NUMBER_OF_ERRORS);
+                + A_TOTAL_OF_OF
+                + processStatistics.getNumProcessed()
+                + VACANCIES_HAVE_CHANGED_TEXT
+                + System.lineSeparator()
+                + NUMBER_OF_VACANCIES_CREATED
+                + processStatistics.getNumCreated()
+                + System.lineSeparator()
+                + NUMBER_OF_VACANCIES_SAVED
+                + processStatistics.getNumChanged()
+                + System.lineSeparator()
+                + NUMBER_OF_VACANCIES_DELETED
+                + processStatistics.getNumDeleted()
+                + System.lineSeparator()
+                + NUMBER_OF_VACANCIES_WITH_ERRORS
+                + numberOfErrors
+                + System.lineSeparator()
+                + TOTAL_PROCESSING_TIME
+                + processStatistics.formattedElapsedTime();
     }
 }

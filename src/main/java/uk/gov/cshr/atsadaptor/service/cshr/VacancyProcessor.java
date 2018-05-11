@@ -24,13 +24,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
 import uk.gov.cshr.atsadaptor.service.ats.ServiceResponseStatus;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.JobRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.model.JobRequestResponseWrapper;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
-import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
+import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 import uk.gov.cshr.atsadaptor.service.cshr.model.vacancy.AtsToCshrDataMapper;
 import uk.gov.cshr.atsadaptor.service.util.PathUtil;
 import uk.gov.cshr.status.CSHRServiceStatus;
@@ -44,9 +45,7 @@ import uk.gov.cshr.status.StatusCode;
 @Component
 @Slf4j
 public class VacancyProcessor {
-    private static final String HYPHEN = " - ";
-    private static final String VACANCY_WITH_REFERENCE = "Vacancy with reference";
-
+    private AuditFileProcessor auditFileProcessor;
     private RestTemplate cshrRestTemplate;
     private RestTemplate cshrSearchRestTemplate;
     private AtsToCshrDataMapper dataMapper;
@@ -70,8 +69,9 @@ public class VacancyProcessor {
     @Value("${cshr.api.service.vacancy.load.endpoint}")
     private String loadVacancyEndpoint;
 
-    public VacancyProcessor(AtsToCshrDataMapper dataMapper, JobRetriever jobRetriever,
+    public VacancyProcessor(AuditFileProcessor auditFileProcessor, AtsToCshrDataMapper dataMapper, JobRetriever jobRetriever,
                             RestTemplateBuilder restTemplateBuilder) {
+        this.auditFileProcessor = auditFileProcessor;
         this.dataMapper = dataMapper;
         this.jobRetriever = jobRetriever;
         this.restTemplateBuilder = restTemplateBuilder;
@@ -91,19 +91,18 @@ public class VacancyProcessor {
      * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      */
     public void process(List<VacancyListData> jobs, List<String> jobsNoLongerActive, Path auditFile,
-                        Map<String, Integer> statistics) {
+                        ProcessStatistics processStatistics) {
         log.info("Starting to process a batch of jobs");
         Path historyFile = FileSystems.getDefault().getPath(historyFileDirectory, historyFileName);
 
         JobRequestResponseWrapper jobsData = jobRetriever.retrieveJobs(jobs);
 
         jobsData.getVacancyResponse().getResponseData().getVacancy()
-                .forEach(v -> processVacancy(v, jobsNoLongerActive, auditFile, historyFile, jobs, statistics));
+                .forEach(v -> processVacancy(v, jobsNoLongerActive, auditFile, historyFile, jobs, processStatistics));
     }
 
     private void processVacancy(Map<String, Object> sourceVacancyData, List<String> jobsNoLongerActive, Path auditFile,
-                                Path historyFile, List<VacancyListData> jobs, Map<String, Integer> statistics) {
-        String auditFileEntry;
+                                Path historyFile, List<VacancyListData> jobs, ProcessStatistics processStatistics) {
         String jobRef = null;
 
         try {
@@ -118,25 +117,27 @@ public class VacancyProcessor {
                     mappedVacancy, CSHRServiceStatus.class);
 
             if (StatusCode.RECORD_CREATED.getCode().equals(response.getBody().getCode())) {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_CREATED);
+                processStatistics.setNumCreated(processStatistics.getNumCreated() + 1);
             } else {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_SAVED);
+                processStatistics.setNumChanged(processStatistics.getNumChanged() + 1);
             }
 
-            auditFileEntry = createAuditFileEntry(jobRef, response);
+            auditFileProcessor.addAuditFileEntry(auditFile, jobRef, response);
             updateJobHistoryFile(jobRef, historyFile, jobs);
         } catch (ExternalApplicantTrackingSystemException ex) {
             if (ServiceResponseStatus.JOB_NOT_LIVE.getErrorMessage().equals(ex.getCshrServiceStatus().getSummary())) {
                 jobsNoLongerActive.add(jobRef);
             }
-            incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-            auditFileEntry = createExceptionFileStatusEntry(jobRef, ex.getCshrServiceStatus());
-        } catch (Exception ex) {
-            incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-            auditFileEntry = createExceptionFileEntry(jobRef, ex);
-        }
 
-        writeAuditFileEntry(auditFile, jobRef, auditFileEntry);
+            processStatistics.setNumErrors(processStatistics.getNumErrors() + 1);
+            auditFileProcessor.addExceptionEntry(auditFile, jobRef, ex.getCshrServiceStatus());
+        } catch (HttpClientErrorException hcee) {
+            processStatistics.setNumErrors(processStatistics.getNumErrors() + 1);
+            auditFileProcessor.addExceptionEntry(auditFile, jobRef, hcee);
+        } catch (Exception ex) {
+            processStatistics.setNumErrors(processStatistics.getNumErrors() + 1);
+            auditFileProcessor.addExceptionEntry(auditFile, jobRef, ex.getMessage());
+        }
     }
 
     private void checkResponseStatus(Map<String, Object> sourceVacancyData) {
@@ -145,84 +146,20 @@ public class VacancyProcessor {
         ServiceResponseStatus.checkForError(code);
     }
 
-    private void incrementStatistic(Map<String, Integer> statistics, String statisticKey) {
-        Integer statistic = statistics.get(statisticKey);
-        statistics.put(statisticKey, statistic + 1);
-    }
-
-    private void writeAuditFileEntry(Path auditFile, String jobRef, String auditFileEntry) {
-        try {
-            FileUtils.write(auditFile.toFile(), auditFileEntry, Charset.forName("UTF-8"), true);
-        } catch (IOException e) {
-            log.error("Error writing auditFileEntry for jobRef " + jobRef + " to a file called "
-                    + auditFile.getFileName() + ". The content of the entry was: " + auditFileEntry, e);
-        }
-    }
-
-    private String createAuditFileEntry(String jobRef, ResponseEntity<CSHRServiceStatus> response) {
-        StringBuilder output = new StringBuilder();
-
-        output.append(VACANCY_WITH_REFERENCE)
-                .append(jobRef)
-                .append(" has been processed: An HTTPStatus with a code of ")
-                .append(response.getStatusCodeValue());
-
-        if (response.getStatusCode().getReasonPhrase() != null) {
-            output.append(" and a reason of ")
-                    .append(response.getStatusCode().getReasonPhrase())
-                    .append(". ");
-        }
-
-        output.append("A CSHR Service Status code and summary are ")
-                .append(response.getBody().getCode())
-                .append(HYPHEN)
-                .append(response.getBody().getSummary());
-
-        if (response.getBody().getDetail() != null && !response.getBody().getDetail().isEmpty()) {
-            output.append(HYPHEN);
-
-            response.getBody().getDetail().forEach(output :: append);
-        }
-
-        output.append(System.lineSeparator()).append(System.lineSeparator());
-
-        return output.toString();
-    }
-
-    private String createExceptionFileStatusEntry(String jobRef, CSHRServiceStatus status) {
-        return createExceptionEntry(jobRef, status.getSummary());
-    }
-
-    private String createExceptionEntry(String jobRef, String summary) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(VACANCY_WITH_REFERENCE);
-
-        if (jobRef != null) {
-            builder.append(" ").append(jobRef);
-        } else {
-            builder.append(" unknown ");
-        }
-
-        return builder.append(summary).append(System.lineSeparator()).append(System.lineSeparator()).toString();
-    }
-
-    private String createExceptionFileEntry(String jobRef, Exception ex) {
-        return createExceptionEntry(jobRef, ex.getMessage());
-    }
-
-    public void deleteVacancies(List<String> vacancies, Path auditFile, Map<String, Integer> statistics) {
+    public void deleteVacancies(List<String> vacancies, Path auditFile, ProcessStatistics processStatistics) {
         log.info("Starting to delete vacancies");
 
-        vacancies.forEach(v -> markCshrVacancyDeleted(v, auditFile, statistics));
+        auditFileProcessor.addDeleteHeaderSummary(auditFile);
+
+        vacancies.forEach(v -> markCshrVacancyDeleted(v, auditFile, processStatistics));
     }
 
-    private void markCshrVacancyDeleted(String id, Path auditFile, Map<String, Integer> statistics) {
+    private void markCshrVacancyDeleted(String id, Path auditFile, ProcessStatistics processStatistics) {
         Map<String, String> params = new HashMap<>();
         params.put("id", id);
 
         log.info("Attempting to delete a vacancy with id " + id);
 
-        String auditFileEntry;
         try {
             ResponseEntity<Map> response =
                     cshrSearchRestTemplate.exchange(loadVacancyEndpoint, HttpMethod.GET, buildRequest(), Map.class, params);
@@ -234,19 +171,17 @@ public class VacancyProcessor {
                 ResponseEntity<CSHRServiceStatus> saveResponse = cshrRestTemplate.postForEntity(chsrSaveVacancyEndpoint,
                         vacancy, CSHRServiceStatus.class);
 
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_DELETED);
+                processStatistics.setNumDeleted(processStatistics.getNumDeleted() + 1);
                 String jobRef = String.valueOf(((Double) vacancy.get("identifier")).intValue());
-                auditFileEntry = createAuditFileEntry(jobRef, saveResponse);
+                auditFileProcessor.addAuditFileEntry(auditFile, jobRef, saveResponse);
             } else {
-                incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-                auditFileEntry = createLoadVacancyErrorEntry(id, response);
+                processStatistics.setNumErrors(processStatistics.getNumErrors() + 1);
+                auditFileProcessor.addLoadVacancyErrorEntry(auditFile, id, response);
             }
         } catch (Exception ex) {
-            incrementStatistic(statistics, StatisticsKeyNames.NUMBER_OF_ERRORS);
-            auditFileEntry = createExceptionFileEntry(id, ex);
+            processStatistics.setNumErrors(processStatistics.getNumErrors() + 1);
+            auditFileProcessor.addExceptionEntry(auditFile, id, ex.getMessage());
         }
-
-        writeAuditFileEntry(auditFile, id, auditFileEntry);
     }
 
     private HttpEntity<?> buildRequest() {
@@ -254,25 +189,6 @@ public class VacancyProcessor {
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         return new HttpEntity<>(headers);
-    }
-
-    private String createLoadVacancyErrorEntry(String id, ResponseEntity<Map> response) {
-        StringBuilder output = new StringBuilder();
-
-        output.append("An attempt to mark a CSHR vacancy with an id of ")
-                .append(id)
-                .append(" failed because the vacancy could not be loaded from the CSHR Data store: An HTTPStatus with a code of ")
-                .append(response.getStatusCodeValue());
-
-        if (response.getStatusCode().getReasonPhrase() != null) {
-            output.append(" and a reason of ")
-                    .append(response.getStatusCode().getReasonPhrase())
-                    .append(". ");
-        }
-
-        output.append(System.lineSeparator()).append(System.lineSeparator());
-
-        return output.toString();
     }
 
     // Only when a job is successfully processed is it's timestamp used in the history file.

@@ -2,9 +2,9 @@ package uk.gov.cshr.atsadaptor.service.cshr;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
+import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 
 /**
  * Specifies the methods for working with the CSHR Vacancy service.
@@ -24,10 +24,10 @@ public interface VacancyService {
      * @param changedVacancies list of vacancies that have changed since the last run.
      * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      * @param auditFilePath path to the audit file
-     * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
+     * @param processStatistics totals of number processed, created, changed, deleted vacancies and number of errors
      * @return list of jobs that are in changedVacancies list but are no longer active by the time they are processed
      */
-    List<String> processChangedVacancies(List<VacancyListData> changedVacancies, List<String> jobsNoLongerActive, Path auditFilePath, Map<String, Integer> statistics);
+    List<String> processChangedVacancies(List<VacancyListData> changedVacancies, List<String> jobsNoLongerActive, Path auditFilePath, ProcessStatistics processStatistics);
 
     /**
      * This method is responsible for processing the collection of vacancies in the given list of
@@ -42,7 +42,7 @@ public interface VacancyService {
      * @param liveJobs list of vacancies that have changed since the last run.
      * @param jobsNoLongerActive list of jobs that are in changedVacancies list but are no longer active by the time they are processed.
      * @param auditFilePath path to the audit file
-     * @param statistics totals of number processed, created, changed, deleted vacancies and number of errors
+     * @param processStatistics totals of number processed, created, changed, deleted vacancies and number of errors
      */
-    void deleteNonActiveVacancies(List<VacancyListData> liveJobs, List<String> jobsNoLongerActive, Path auditFilePath, Map<String, Integer> statistics);
+    void deleteNonActiveVacancies(List<VacancyListData> liveJobs, List<String> jobsNoLongerActive, Path auditFilePath, ProcessStatistics processStatistics);
 }

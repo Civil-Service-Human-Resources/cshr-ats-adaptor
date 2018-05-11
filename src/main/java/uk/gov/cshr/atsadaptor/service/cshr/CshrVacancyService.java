@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
+import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 
 /**
  * This implementation is for meeting the Applicant Tracking System's constraint of only allowing a  maximum request of
@@ -68,13 +69,12 @@ public class CshrVacancyService implements VacancyService {
     }
 
     @Override
-    public List<String> processChangedVacancies(List<VacancyListData> changedVacancies,
-                                                         List<String> jobsNoLongerActive, Path auditFilePath,
-                                                         Map<String, Integer> statistics) {
+    public List<String> processChangedVacancies(List<VacancyListData> changedVacancies, List<String> jobsNoLongerActive,
+                                                Path auditFilePath, ProcessStatistics processStatistics) {
         log.info("Processing batches of vacancies that have changed since the last run.");
 
         Iterables.partition(changedVacancies, atsRequestBatchSize)
-                .forEach(batch -> vacancyProcessor.process(batch, jobsNoLongerActive, auditFilePath, statistics));
+                .forEach(batch -> vacancyProcessor.process(batch, jobsNoLongerActive, auditFilePath, processStatistics));
 
         return jobsNoLongerActive;
     }
@@ -97,7 +97,7 @@ public class CshrVacancyService implements VacancyService {
      * @param liveJobs the list of jobs that are live in the ATS.
      */
     public void deleteNonActiveVacancies(List<VacancyListData> liveJobs, List<String> jobsNoLongerActive,
-                                         Path auditFilePath, Map<String, Integer> statistics) {
+                                         Path auditFilePath, ProcessStatistics processStatistics) {
         log.info("Starting to search for vacancies that are no longer active in the ATS");
         boolean inProgress = true;
 
@@ -129,7 +129,7 @@ public class CshrVacancyService implements VacancyService {
                 log.debug("Found " + vacanciesToDelete.size() + " vacancies to delete from page number " + pageNumber +
                         " of vacancies retrieved from the CSHR data model");
                 if (!vacanciesToDelete.isEmpty()) {
-                    vacancyProcessor.deleteVacancies(vacanciesToDelete, auditFilePath, statistics);
+                    vacancyProcessor.deleteVacancies(vacanciesToDelete, auditFilePath, processStatistics);
                 }
             }
         }

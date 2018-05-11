@@ -1,4 +1,4 @@
-FROM 	maven:3.5-jdk-8 as dependencies
+FROM 	cshrrpg.azurecr.io/maven-3-base as dependencies
 
 ARG	    arg_maven_repo
 
@@ -10,7 +10,7 @@ COPY 	.settings.xml /usr/share/maven/ref/settings.xml
 RUN 	mvn -f /usr/src/myapp/pom.xml -s /usr/share/maven/ref/settings.xml dependency:resolve
 
 
-FROM 	maven:3.5-jdk-8 as build
+FROM 	cshrrpg.azurecr.io/maven-3-base as build
 
 ARG	    arg_maven_repo
 ENV	    MAVEN_REPO=$arg_maven_repo
@@ -22,11 +22,13 @@ COPY 	. /usr/src/myapp/
 
 RUN 	mvn -f /usr/src/myapp/pom.xml -s /usr/share/maven/ref/settings.xml clean package
 
-FROM 	openjdk:8u151-jre-alpine3.7
+FROM 	cshrrpg.azurecr.io/java-8-base
 
-COPY 	--from=build /usr/src/myapp/target/ats-adaptor-0.0.1.jar /ats-adaptor-0.0.1.jar
+COPY 	--from=build /usr/src/myapp/target/ats-adaptor-0.0.1.jar /app/ats-adaptor-0.0.1.jar
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/ats-adaptor-0.0.1.jar", \
+USER 	appuser
+
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/ats-adaptor-0.0.1.jar", \
             "--ats.authentication.token=${ATS_AUTHENTICATION_TOKEN}", \
             "--ats.client.id=${ATS_CLIENT_ID}", \
             "--ats.jobrun.history.directory=${ATS_JOBRUN_HISTORY_DIRECTORY}", \

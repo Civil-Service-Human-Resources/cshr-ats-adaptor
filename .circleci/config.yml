@@ -8,13 +8,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Login to azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+          
+      - run:
           name: Build image
           command: |
             docker build -t ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} --build-arg arg_maven_repo="${MAVEN_REPO}" .
 
-      - run:
-          name: Login to azure container repo
-          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
 
       - run:
           name: Tag and push

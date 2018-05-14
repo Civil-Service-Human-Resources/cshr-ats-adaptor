@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListFilter;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
@@ -27,6 +28,7 @@ public class VacanciesController implements VacanciesApi {
     @Value("${ats.jobrun.history.directory}")
     private String historyFileDirectory;
     @Value("${ats.jobrun.history.file}")
+
     private String historyFileName;
 
     public VacanciesController(VacancyService vacancyService, JobsListFilter jobsListFilter,
@@ -63,5 +65,10 @@ public class VacanciesController implements VacanciesApi {
         log.info("COMPLETED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
 
         return ResponseEntity.ok(ResponseBuilder.buildServiceStatus(processStatistics));
+    }
+
+    @Scheduled(cron = "${cshr.jobrun.cron.schedule}")
+    public void loadVacancies() {
+        getVacancies();
     }
 }

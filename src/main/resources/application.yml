@@ -38,12 +38,7 @@ cshr:
       directory: ./
       basefilename: VacancyProcessor
     cron:
-      schedule:
-
-slack:
-  notification:
-    channel:
-    endpoint:
+      schedule: "0 1/5 * * * ?"
 
 spring:
   security:

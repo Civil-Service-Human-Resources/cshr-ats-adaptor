@@ -13,9 +13,11 @@ import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListFilter;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.JobsListRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobslist.model.VacancyListData;
 import uk.gov.cshr.atsadaptor.service.cshr.AuditFileProcessor;
+import uk.gov.cshr.atsadaptor.service.cshr.SlackNotificationService;
 import uk.gov.cshr.atsadaptor.service.cshr.VacancyService;
 import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 import uk.gov.cshr.status.CSHRServiceStatus;
+import uk.gov.cshr.status.StatusCode;
 
 @RestController
 @Slf4j
@@ -23,24 +25,26 @@ public class VacanciesController implements VacanciesApi {
     private AuditFileProcessor auditFileProcessor;
     private JobsListFilter jobsListFilter;
     private JobsListRetriever jobsListRetriever;
+    private SlackNotificationService slackNotificationService;
     private VacancyService vacancyService;
 
     @Value("${ats.jobrun.history.directory}")
     private String historyFileDirectory;
     @Value("${ats.jobrun.history.file}")
-
     private String historyFileName;
 
     public VacanciesController(VacancyService vacancyService, JobsListFilter jobsListFilter,
-                               JobsListRetriever jobsListRetriever, AuditFileProcessor auditFileProcessor) {
+                               JobsListRetriever jobsListRetriever, AuditFileProcessor auditFileProcessor,
+                               SlackNotificationService slackNotificationService) {
         this.vacancyService = vacancyService;
         this.jobsListFilter = jobsListFilter;
         this.jobsListRetriever = jobsListRetriever;
         this.auditFileProcessor = auditFileProcessor;
+        this.slackNotificationService = slackNotificationService;
     }
 
     @Override
-    public ResponseEntity<CSHRServiceStatus> getVacancies() {
+    public ResponseEntity<CSHRServiceStatus> loadVacancies() {
         log.info("STARTED: Processing jobs from Applicant Tracking System into the CSHR Vacancy Data Store");
         ProcessStatistics processStatistics = new ProcessStatistics(0, 0, 0, 0, 0, null, System.nanoTime());
 
@@ -68,7 +72,22 @@ public class VacanciesController implements VacanciesApi {
     }
 
     @Scheduled(cron = "${cshr.jobrun.cron.schedule}")
-    public void loadVacancies() {
-        getVacancies();
+    public void runLoadVacancies() {
+        CSHRServiceStatus serviceStatus;
+
+        try {
+            serviceStatus = loadVacancies().getBody();
+        } catch (Exception re) {
+            List<String> details = new ArrayList<>();
+            details.add(re.getMessage());
+
+            serviceStatus = CSHRServiceStatus.builder()
+                    .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
+                    .summary("An unexpected error has occurred trying to run the ATS Vacancy Data Load process")
+                    .detail(details)
+                    .build();
+        }
+
+        slackNotificationService.postResponseToSlack(serviceStatus);
     }
 }

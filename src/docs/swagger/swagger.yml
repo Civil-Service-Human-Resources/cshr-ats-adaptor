@@ -20,8 +20,8 @@ paths:
     get:
       tags:
         - vacancies-controller
-      summary: get vacancies
-      operationId: getVacancies
+      summary: load vacancies
+      operationId: loadVacancies
       consumes:
         - application/json
       produces:

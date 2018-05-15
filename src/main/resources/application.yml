@@ -9,7 +9,7 @@ ats:
       file: jobRunHistory.txt
   request:
     batch:
-      size: 10
+      size: 100
     endpoint:
 
 cshr:
@@ -38,7 +38,12 @@ cshr:
       directory: ./
       basefilename: VacancyProcessor
     cron:
-      schedule: "0 1/5 * * * ?"
+      schedule:
+
+slack:
+  notification:
+    channel:
+    url:
 
 spring:
   security:

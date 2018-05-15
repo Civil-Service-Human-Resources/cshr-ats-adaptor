@@ -24,11 +24,11 @@ RUN 	mvn -f /usr/src/myapp/pom.xml -s /usr/share/maven/ref/settings.xml clean pa
 
 FROM 	cshrrpg.azurecr.io/java-8-base
 
-COPY 	--from=build /usr/src/myapp/target/ats-adaptor-1.1.0-SNAPSHOT.jar /app/ats-adaptor-1.1.0-SNAPSHOT.jar
+COPY 	--from=build /usr/src/myapp/target/ats-adaptor.jar /app/ats-adaptor.jar
 
 USER 	appuser
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/ats-adaptor-1.1.0-SNAPSHOT.jar", \
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/ats-adaptor.jar", \
             "--ats.authentication.token=${ATS_AUTHENTICATION_TOKEN}", \
             "--ats.client.id=${ATS_CLIENT_ID}", \
             "--ats.jobrun.history.directory=${ATS_JOBRUN_HISTORY_DIRECTORY}", \

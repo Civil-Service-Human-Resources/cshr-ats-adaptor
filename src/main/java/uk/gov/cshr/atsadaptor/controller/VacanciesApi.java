@@ -59,5 +59,11 @@ public interface VacanciesApi {
                     )
             }
     )
-    ResponseEntity<CSHRServiceStatus> getVacancies();
+    ResponseEntity<CSHRServiceStatus> loadVacancies();
+
+    /**
+     * This method is the entry point for loading vacancies from the Applicant Tracking System into the CSHR data store
+     * and is for use by a scheduler.
+     */
+    void runLoadVacancies();
 }

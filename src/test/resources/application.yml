@@ -11,6 +11,7 @@ ats:
     batch:
       size: 100
     endpoint: /theurl
+
 cshr:
   api:
     service:
@@ -33,9 +34,17 @@ cshr:
     audit:
       directory: ./
       basefilename: VacancyProcessor
+    cron:
+      schedule: "0 0 0/5 * * ?"
   ats:
     vendor:
       id: vendorId
+
+slack:
+  notification:
+    channel:
+    endpoint:
+
 spring:
   security:
     service:

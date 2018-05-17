@@ -52,11 +52,16 @@ public final class ResponseBuilder {
     private static List<String> createDetails(ProcessStatistics processStatistics) {
         List<String> details = new ArrayList<>();
 
-        details.add(A_TOTAL_OF_OF + processStatistics.getNumProcessed() + VACANCIES_HAVE_CHANGED_TEXT);
-        details.add(NUMBER_OF_VACANCIES_CREATED + processStatistics.getNumCreated());
-        details.add(NUMBER_OF_VACANCIES_SAVED + processStatistics.getNumChanged());
-        details.add(NUMBER_OF_VACANCIES_DELETED + processStatistics.getNumDeleted());
-        details.add(NUMBER_OF_VACANCIES_WITH_ERRORS + processStatistics.getNumErrors());
+        if (processStatistics.getNumProcessed().compareTo(0) > 0) {
+            details.add(A_TOTAL_OF_OF + processStatistics.getNumProcessed() + VACANCIES_HAVE_CHANGED_TEXT);
+            details.add(NUMBER_OF_VACANCIES_CREATED + processStatistics.getNumCreated());
+            details.add(NUMBER_OF_VACANCIES_SAVED + processStatistics.getNumChanged());
+            details.add(NUMBER_OF_VACANCIES_DELETED + processStatistics.getNumDeleted());
+            details.add(NUMBER_OF_VACANCIES_WITH_ERRORS + processStatistics.getNumErrors());
+        } else {
+            details.add("No changes were found that required processing.");
+        }
+
         details.add(TOTAL_PROCESSING_TIME + processStatistics.formattedElapsedTime());
 
         return details;

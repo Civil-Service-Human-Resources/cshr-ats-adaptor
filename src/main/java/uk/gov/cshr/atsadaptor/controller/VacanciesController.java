@@ -16,6 +16,7 @@ import uk.gov.cshr.atsadaptor.service.cshr.AuditFileProcessor;
 import uk.gov.cshr.atsadaptor.service.cshr.SlackNotificationService;
 import uk.gov.cshr.atsadaptor.service.cshr.VacancyService;
 import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
+import uk.gov.cshr.exception.CSHRServiceException;
 import uk.gov.cshr.status.CSHRServiceStatus;
 import uk.gov.cshr.status.StatusCode;
 
@@ -77,17 +78,32 @@ public class VacanciesController implements VacanciesApi {
 
         try {
             serviceStatus = loadVacancies().getBody();
+        } catch (CSHRServiceException ex ) {
+            List<String> details = new ArrayList<>();
+            details.add(ex.getCshrServiceStatus().getSummary());
+
+            if (ex.getCshrServiceStatus().getDetail() != null
+                    && !ex.getCshrServiceStatus().getDetail().isEmpty()) {
+                details.addAll(ex.getCshrServiceStatus().getDetail());
+            }
+
+            serviceStatus = buildCshrServiceStatus(details);
+
         } catch (Exception re) {
             List<String> details = new ArrayList<>();
             details.add(re.getMessage());
 
-            serviceStatus = CSHRServiceStatus.builder()
-                    .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
-                    .summary("An unexpected error has occurred trying to run the ATS Vacancy Data Load process")
-                    .detail(details)
-                    .build();
+            serviceStatus = buildCshrServiceStatus(details);
         }
 
         slackNotificationService.postResponseToSlack(serviceStatus);
+    }
+
+    private CSHRServiceStatus buildCshrServiceStatus(List<String> details) {
+        return CSHRServiceStatus.builder()
+                .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
+                .summary("An unexpected error has occurred trying to run the ATS Vacancy Data Load process")
+                .detail(details)
+                .build();
     }
 }

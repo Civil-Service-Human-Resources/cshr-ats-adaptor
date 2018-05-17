@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>uk.gov.cshr</groupId>
 		<artifactId>cshr-parent</artifactId>
-		<version>0.0.4</version>
+		<version>1.0.0</version>
 		<relativePath></relativePath> <!-- lookup parent from repository -->
 	</parent>
 
@@ -122,13 +122,4 @@
             <artifactId>cshr-common</artifactId>
         </dependency>
     </dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>

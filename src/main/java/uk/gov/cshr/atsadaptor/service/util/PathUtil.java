@@ -1,8 +1,9 @@
 package uk.gov.cshr.atsadaptor.service.util;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import uk.gov.cshr.exception.CSHRServiceException;
 import uk.gov.cshr.status.CSHRServiceStatus;
@@ -28,11 +29,15 @@ public final class PathUtil {
             }
 
             path.toFile().createNewFile();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            List<String> details = new ArrayList<>();
+            details.add("Name of file path is: " + path.toString());
+
             CSHRServiceStatus status = CSHRServiceStatus
                     .builder()
                     .code(StatusCode.FILE_SYSTEM_ERROR.getCode())
                     .summary(e.getMessage())
+                    .detail(details)
                     .build();
 
             throw CSHRServiceException

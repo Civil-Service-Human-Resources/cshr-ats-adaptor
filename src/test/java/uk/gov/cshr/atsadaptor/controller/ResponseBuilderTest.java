@@ -5,14 +5,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
-import uk.gov.cshr.atsadaptor.service.cshr.model.StatisticsKeyNames;
 import uk.gov.cshr.status.CSHRServiceStatus;
 
 /**
@@ -20,7 +17,7 @@ import uk.gov.cshr.status.CSHRServiceStatus;
  */
 public class ResponseBuilderTest {
     @Test
-    public void testBuildServiceStatus_noErrors() {
+    public void buildServiceStatus_noErrors() {
         ProcessStatistics stats = new ProcessStatistics(5,5,1,0,11,null, System.nanoTime());
         stats.setEndTime(stats.getStartTime() + 7655678538765L);
 
@@ -40,21 +37,27 @@ public class ResponseBuilderTest {
 
         assertThat(ResponseBuilder.buildServiceStatus(stats), is(equalTo(expected)));
     }
+    
+    @Test
+    public void buildServiceStatus_noChangesProcessed() {
+        ProcessStatistics stats = new ProcessStatistics(0,0,0,0,0,null, System.nanoTime());
+        stats.setEndTime(stats.getStartTime() + 7655678538765L);
 
-    private Map<String, Integer> createStats(int numSaved, int numErrors) {
-        Map<String, Integer> stats = new HashMap<>();
+        List<String> details = new ArrayList<>();
+        details.add("No changes were found that required processing.");
+        details.add("Total time taken to process the vacancies                    : 2 hours 7 minutes 35 seconds");
 
-        stats.put(StatisticsKeyNames.NUMBER_PROCESSED, 11);
-        stats.put(StatisticsKeyNames.NUMBER_CREATED, 5);
-        stats.put(StatisticsKeyNames.NUMBER_SAVED, numSaved);
-        stats.put(StatisticsKeyNames.NUMBER_DELETED, 1);
-        stats.put(StatisticsKeyNames.NUMBER_OF_ERRORS, numErrors);
+        CSHRServiceStatus expected = CSHRServiceStatus.builder()
+                .code("CSHR_20")
+                .summary("A request to load vacancies was received and completed successfully with no errors reported.")
+                .detail(details)
+                .build();
 
-        return stats;
+        assertThat(ResponseBuilder.buildServiceStatus(stats), is(equalTo(expected)));
     }
 
     @Test
-    public void testBuildServiceStatus_withErrors() {
+    public void buildServiceStatus_withErrors() {
         ProcessStatistics stats = new ProcessStatistics(4,5,1,1,11,null, System.nanoTime());
         stats.setEndTime(stats.getStartTime() + 7655678538765L);
 

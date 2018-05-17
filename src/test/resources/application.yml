@@ -11,6 +11,7 @@ ats:
     batch:
       size: 100
     endpoint: /theurl
+
 cshr:
   api:
     service:
@@ -38,6 +39,12 @@ cshr:
   ats:
     vendor:
       id: vendorId
+
+slack:
+  notification:
+    channel:
+    endpoint:
+
 spring:
   security:
     service:

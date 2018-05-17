@@ -32,7 +32,7 @@ public class SlackNotificationService {
 
     @Value("${slack.notification.channel}")
     private String slackNotificationChannel;
-    @Value("${slack.notification.url}")
+    @Value("${slack.notification.endpoint}")
     private String slackNotificationUrl;
 
     private RestTemplate slackRestTemplate;
@@ -49,7 +49,7 @@ public class SlackNotificationService {
         } catch (Exception ex) {
             log.error("An error occurred trying to post the results of the scheduled process to the Slack channel called: "
                     + slackNotificationChannel
-            + ".  The content of the message was: " + entity.getBody().toString());
+            + ".  The content of the message was: " + entity.getBody().toString(), ex);
         }
     }
 

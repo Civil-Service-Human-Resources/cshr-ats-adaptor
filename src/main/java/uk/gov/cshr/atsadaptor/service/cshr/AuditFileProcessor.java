@@ -25,6 +25,7 @@ import uk.gov.cshr.status.CSHRServiceStatus;
 @Slf4j
 public class AuditFileProcessor {
     private static final String HYPHEN = " - ";
+    private static final String NA = "N/a";
     private static final String SEPARATOR = StringUtils.repeat("=", 138);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private static final String UNKNOWN = "unknown";
@@ -150,12 +151,12 @@ public class AuditFileProcessor {
             try {
                 serviceStatus = new Gson().fromJson(hcee.getResponseBodyAsString(), CSHRServiceStatus.class);
             } catch (Exception ex) {
-                serviceStatus = null;
+                serviceStatus = CSHRServiceStatus.builder().code(NA).summary(hcee.getResponseBodyAsString()).build();
             }
         }
 
         if (serviceStatus == null) {
-            serviceStatus = CSHRServiceStatus.builder().code("N/a").summary(hcee.getMessage()).build();
+            serviceStatus = CSHRServiceStatus.builder().code(NA).summary(hcee.getMessage()).build();
         }
 
         return serviceStatus;

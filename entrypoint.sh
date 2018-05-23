@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/bash -X
 ##
 # Due to some restrictions with the Azure platform we need to
 # run filebeat alongside the application in the same container.

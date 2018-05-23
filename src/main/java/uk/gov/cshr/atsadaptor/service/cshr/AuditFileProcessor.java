@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -129,12 +130,35 @@ public class AuditFileProcessor {
 
         output.append("\t\tERROR\t\t")
                 .append(hcee.getRawStatusCode())
-                .append("\t\t")
-                .append(hcee.getMessage())
-                .append(System.lineSeparator())
-                .append(System.lineSeparator());
+                .append("\t\t");
+
+        CSHRServiceStatus serviceStatus = extractServiceStatusInfo(hcee);
+        output.append(serviceStatus.getCode())
+                .append("\t\t\t")
+                .append(serviceStatus.getSummary());
+
+        output.append(System.lineSeparator())
+            .append(System.lineSeparator());
 
         writeAuditFileEntry(path, jobRef, output.toString());
+    }
+
+    private CSHRServiceStatus extractServiceStatusInfo(HttpClientErrorException hcee) {
+        CSHRServiceStatus serviceStatus = null;
+
+        if (hcee.getResponseBodyAsString() != null) {
+            try {
+                serviceStatus = new Gson().fromJson(hcee.getResponseBodyAsString(), CSHRServiceStatus.class);
+            } catch (Exception ex) {
+                serviceStatus = null;
+            }
+        }
+
+        if (serviceStatus == null) {
+            serviceStatus = CSHRServiceStatus.builder().code("N/a").summary(hcee.getMessage()).build();
+        }
+
+        return serviceStatus;
     }
 
     public void addLoadVacancyErrorEntry(Path path, String id, ResponseEntity<Map> response) {

@@ -51,6 +51,6 @@ workflows:
           filters:
             branches:
               only:
-	        - master
-          - develop
-	        - release*
+	            - master
+              - develop
+	            - release*

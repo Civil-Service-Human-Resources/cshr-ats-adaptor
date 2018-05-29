@@ -65,7 +65,7 @@ public class JobsListRetriever {
         try {
             ServiceResponseStatus.checkForError(response.getBody().getVacancyResponse().getStatusCode());
         } catch (ExternalApplicantTrackingSystemException ex) {
-            log.error("EXCEPTION");
+            log.error("EXCEPTIONEXCEPTIONEXCEPTIONEXCEPTIONEXCEPTIONEXCEPTIONEXCEPTION");
             log.error(ex);
             auditFileProcessor.writeAuditFileEntry(auditFilePath, "N/a", ex.getCshrServiceStatus().getSummary());
 

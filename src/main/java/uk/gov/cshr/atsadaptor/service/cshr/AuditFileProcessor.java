@@ -130,7 +130,7 @@ public class AuditFileProcessor {
         output.append("\t\tERROR\t\t")
                 .append(hcee.getRawStatusCode())
                 .append("\t\t")
-                .append(hcee.getMessage())
+                .append(hcee.getResponseBodyAsString())
                 .append(System.lineSeparator())
                 .append(System.lineSeparator());
 

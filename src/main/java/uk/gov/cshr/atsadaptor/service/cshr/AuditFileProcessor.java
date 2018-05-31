@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import uk.gov.cshr.status.CSHRServiceStatus;
 @Slf4j
 public class AuditFileProcessor {
     private static final String HYPHEN = " - ";
+    private static final String NA = "N/a";
     private static final String SEPARATOR = StringUtils.repeat("=", 138);
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private static final String UNKNOWN = "unknown";
@@ -129,12 +131,35 @@ public class AuditFileProcessor {
 
         output.append("\t\tERROR\t\t")
                 .append(hcee.getRawStatusCode())
-                .append("\t\t")
-                .append(hcee.getResponseBodyAsString())
-                .append(System.lineSeparator())
-                .append(System.lineSeparator());
+                .append("\t\t");
+
+        CSHRServiceStatus serviceStatus = extractServiceStatusInfo(hcee);
+        output.append(serviceStatus.getCode())
+                .append("\t\t\t")
+                .append(serviceStatus.getSummary());
+
+        output.append(System.lineSeparator())
+            .append(System.lineSeparator());
 
         writeAuditFileEntry(path, jobRef, output.toString());
+    }
+
+    private CSHRServiceStatus extractServiceStatusInfo(HttpClientErrorException hcee) {
+        CSHRServiceStatus serviceStatus = null;
+
+        if (hcee.getResponseBodyAsString() != null) {
+            try {
+                serviceStatus = new Gson().fromJson(hcee.getResponseBodyAsString(), CSHRServiceStatus.class);
+            } catch (Exception ex) {
+                serviceStatus = CSHRServiceStatus.builder().code(NA).summary(hcee.getResponseBodyAsString()).build();
+            }
+        }
+
+        if (serviceStatus == null) {
+            serviceStatus = CSHRServiceStatus.builder().code(NA).summary(hcee.getMessage()).build();
+        }
+
+        return serviceStatus;
     }
 
     public void addLoadVacancyErrorEntry(Path path, String id, ResponseEntity<Map> response) {

@@ -1,5 +1,5 @@
 {
-  "identifier": "1562398",
+  "identifier": 1562398,
   "atsVendorIdentifier": "VendorId",
   "applyURL": "https://csrtesting.wcn.co.uk/csr/login.cgi?jcode=1562398",
   "closingDate": "2020-01-01T23:59:59.999+0000",
@@ -18,7 +18,7 @@
   "nationalityStatement": "RESERVED",
   "numberVacancies": 1,
   "overseasJob": false,
-  "personalSpecification": "Person specification Required<br><b>Licences Label</b><br>Licences Required<br><b>Memberships Label</b><br>Memberships Required<br><b>Languages Label</b><br>Languages Required<br><b>Grade entry qualifications Label</b><br>Grade entry qualifications Text"
+  "personalSpecification": "Person specification Required<br><b>Licences Label</b><br>Licences Required<br><b>Memberships Label</b><br>Memberships Required<br><b>Languages Label</b><br>Languages Required<br><b>Grade entry qualifications Label</b><br>Grade entry qualifications Text",
   "publicOpeningDate": "2018-01-01T23:59:59.999+0000",
   "regions": null,
   "salaryMax": 40001,

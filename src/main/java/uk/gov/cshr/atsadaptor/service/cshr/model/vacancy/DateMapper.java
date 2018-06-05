@@ -27,7 +27,7 @@ class DateMapper extends DataMapper {
      * @param fieldName name of the field whose value is to be mapped to the ISO 8061 standard
      * @return date in the ISO 8061 standard or null if there is no date to map.
      */
-    String map(Map<String, Object> source, String fieldName) {
+    String map(Map<String, Object> source, String fieldName, boolean startOfDay) {
         log.debug("Mapping a date for a field called " + fieldName);
 
         String result = null;
@@ -37,10 +37,10 @@ class DateMapper extends DataMapper {
 
             if (StringUtils.isNotEmpty(date)) {
                 LocalDate then = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                LocalDateTime endOfDay = then.atTime(LocalTime.MAX);
+                LocalDateTime dateTime = startOfDay ? then.atTime(LocalTime.MIDNIGHT) : then.atTime(LocalTime.MAX);
 
                 result =
-                        ZonedDateTime.of(endOfDay, ZoneId.systemDefault())
+                        ZonedDateTime.of(dateTime, ZoneId.systemDefault())
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             }
         }

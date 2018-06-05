@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+  termsOfService: 'urn:tos'
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0'
+host: 'localhost:8080'
+basePath: /
+tags:
+  - name: vacancies-controller
+    description: Vacancies Controller
+  - name: ATS Adaptor Service
+    description: API relating to requesting and processing of vacancies from an external client for persistence into the CSHR Vacancy data store.
+paths:
+  /vacancies:
+    get:
+      tags:
+        - vacancies-controller
+      summary: load vacancies
+      operationId: loadVacancies
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Request to load vacancies received.
+          schema:
+            $ref: '#/definitions/CSHRServiceStatus'
+        '500':
+          description: An unexpected error occurred processing your request. Please contact the system administrator.
+          schema:
+            $ref: '#/definitions/CSHRServiceStatus'
+        '502':
+          description: The service is unable to request vacancies from the external ats system. Please contact the system administrator.
+          schema:
+            $ref: '#/definitions/CSHRServiceStatus'
+        '503':
+          description: The service is currently unavailable. This may be a temporary condition and if it persists please contact the system administrator
+          schema:
+            $ref: '#/definitions/CSHRServiceStatus'
+        '504':
+          description: The request to the external ats system has timed out. Please contact the system administrator.
+          schema:
+            $ref: '#/definitions/CSHRServiceStatus'
+definitions:
+  CSHRServiceStatus:
+    type: object
+    properties:
+      code:
+        type: string
+      detail:
+        type: array
+        items:
+          type: string
+      summary:
+        type: string

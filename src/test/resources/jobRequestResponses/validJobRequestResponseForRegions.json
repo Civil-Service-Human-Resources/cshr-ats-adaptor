@@ -1,0 +1,1141 @@
+{
+  "vacancyResponse": {
+    "responseData": {
+      "responseDataTimestamp": "2018-04-10T10:52:02Z",
+      "vacancy": [
+        {
+          "field": {
+            "012_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "167686",
+                "text": "Developed Vetting"
+              }
+            },
+            "013_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "167688",
+                "text": "A Disclosure and Barring Security Check is not needed"
+              }
+            },
+            "014_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18038",
+                "text": "Yes"
+              }
+            },
+            "015_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Job description",
+              "value": "About the Department<br /><br />This is an exciting time to join the Department for International Trade (DIT). Our aim is to promote British trade and investment across the world which is vital for the prosperity of the UK. DIT brings together policy, promotion and financial expertise to break down barriers to trade and investment in markets across the world to help businesses succeed. This is a great opportunity to be part of an international team that contributes to the success of the UK's trade goals.<br /><br />Main Purpose of the Role<br /><br />In Colombia, the post-holder will:<br /><br />1)    Lead a highly skilled DIT team (10 LE staff) in achieving high value trade and investment (foreign direct and overseas direct investment) objectives including development of clear strategy and working through Latin America and Caribbean (LATAC) sector campaigns;<br /><br />2)    Achieve volume objectives (support to SMEs) by ensuring availability of an appropriate mix of efficient in-house support, contracted support (working with LATAC colleagues) and revenue-generating services;<br /><br />3)    Promote UK business in Colombia, in partnership with the BE Bogotá Press and Public Affairs team, by executing a joint external communications strategy;<br /><br />4)    Be a senior member of the Embassy’s diplomatic team, supporting the Ambassador and representing the UK on commercial issues (this includes high-level engagement and maintaining a public profile);<br /><br />5)    Coordinate extensively with the BE Bogotá Economic Diplomacy, Prosperity Fund, Political and other teams (incl. British Council) in support of Embassy programmes and projects that drive UK commercial success;<br /><br />6)    Coordinate extensively with HMG colleagues, and other partners, in the UK to promote doing business in Colombia, facilitate use of UK Export Finance, manage senior visits and provide feedback to decision-makers;<br /><br />7)    Strengthen businesses relationships through structured account management, business engagement platforms (e.g. Ambassador’s business advisory group) and coherent partnership with chambers of commerce; and<br /><br />8)    Hold the DIT Colombia budget.<br /><br />Across DIT Latin America and Caribbean, the post-holder will:<br /><br />9)    Represent the DIT LATAC mid-sized markets (Argentina, Chile, Colombia and Peru) on the LATAC board and in regional-level engagement with DIT HQ; <br /><br />10)    Drive mid-sized markets’ delivery against performance objectives through support and challenge; <br /><br />11)         Procatively support the region’s work on Trade Policy and Market Access; and<br /><br />12)    Support regional integration and change by leading cross-LATAC projects.<br /><br />Please refer to the Job Specification attached for further details about the Main Responsibilities, as well as to see the skills and experience required for the role, information on working patterns, learning and development opportunities, and additional information about the post<br />"
+            },
+            "017_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238953",
+                "text": "Leading and communicating"
+              }
+            },
+            "018_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238959",
+                "text": "Delivering at pace"
+              }
+            },
+            "019_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238954",
+                "text": "Collaborating and partnering"
+              }
+            },
+            "020_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238951",
+                "text": "Changing and improving"
+              }
+            },
+            "021_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "022_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "038_5070000": {
+              "display": true,
+              "format": "multi_lookup",
+              "label": "Working pattern",
+              "value": [
+                {
+                  "code": "249413",
+                  "text": "Full-time"
+                },
+                {
+                  "code": "249415",
+                  "text": "Job share"
+                }
+              ]
+            },
+            "040_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Expected posting length",
+              "value": ""
+            },
+            "041_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Length of employment",
+              "value": "4 years + 1 optional year"
+            },
+            "046_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Benefits",
+              "value": "Benefits Text"
+            },
+            "047_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Sift/interview dates and location Label",
+              "value": "Sift/interview dates and location Text"
+            },
+            "050_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Candidates are advised to read the Post Fact and Report information provided by the Foreign and Commonwealth Office before making their application. This can be accessed by creating an account on the following link: https://post.hub.fco.gov.uk/. Should there be difficulties setting up an account, please contact helpdesk.faultreports@fco.go.uk. Candidates may, in pressing circumstances and having tried the above, contact HRDirect@fco.gov.uk who can supply the information, usually within four days. <br /><br />Candidates should also refer to the Important Further Information attachment before making their application. <br /><br />Candidates may direct further general queries to DIT Resourcing Team (resourcing@trade.gov.uk). <br /><br />If a person with disabilities is put at a substantial disadvantage compared to a non-disabled person, we have a duty to make reasonable changes to our processes. <br />If you need a change to be made so that you can make your application, you should: <br />•    Contact Government Recruitment Service via ditrecruitment.grs@cabinetoffice.gov.uk as soon as possible before the closing date to discuss your needs <br /><br />•    Complete the “Assistance required” section in the “Additional requirements” page of your application form to tell us what changes or help you might need further on in the recruitment process. For instance, you may need wheelchair access at interview, or if you’re deaf, a Language Service Professional."
+            },
+            "062_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "The Civil Service embraces diversity and promotes equality of opportunity. There is a guaranteed interview scheme (GIS) for candidates with disabilities who meet the minimum selection criteria."
+            },
+            "070_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "Number of posts",
+              "value": {
+                "code": "167842",
+                "text": "1"
+              }
+            },
+            "072_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "This vacancy is open to employees who already hold the substantive grade for the post and were appointed to the Civil Service on merit following a fair and open competition; or were appointed to a permanent Civil Service post through an exception in the Civil Service Commissioners’ rules."
+            },
+            "074_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "This vacancy is open to all Civil Service employees and employees of accredited non-departmental public bodies (NDPBs) who were appointed on merit following a fair and open competition; or were appointed to a permanent post through an exception in the Civil Service Commissioners' rules."
+            },
+            "085_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Hours",
+              "value": "37 hours (42 FTE)"
+            },
+            "099_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Grade entry qualifications Label",
+              "value": "Grade entry qualifications Text"
+            },
+            "101_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "102_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "103_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "104_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "105_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "106_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "107_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "FCO D6"
+            },
+            "110_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Qualifications",
+              "value": ""
+            },
+            "111_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Licences Label",
+              "value": "Licences Required"
+            },
+            "112_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Memberships Label",
+              "value": "Memberships Required"
+            },
+            "113_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Languages Label",
+              "value": "Languages Required"
+            },
+            "114_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "115_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Follow link to apply",
+              "value": "This would be a link to be able to find out how to apply for this vacancy."
+            },
+            "116_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Priority will be given to civil servants who are surplus."
+            },
+            "118_5070000": {
+              "display": false,
+              "format": "date",
+              "label": "Online test deadline",
+              "value": ""
+            },
+            "120_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "121_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "123_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Commissioner's statement",
+              "value": ""
+            },
+            "128_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Overseas"
+            },
+            "131_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "133_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "134_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "244975",
+                "text": "Across government"
+              }
+            },
+            "136_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Successful candidates must pass a disclosure and barring security check."
+            },
+            "137_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Medical",
+              "value": "Successful candidates will be expected to have a medical."
+            },
+            "140_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "141_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "142_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "143_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "144_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "147_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "148_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Person specification Label",
+              "value": "Person specification Required"
+            },
+            "150_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Selection process details Label",
+              "value": "Selection process details Text"
+            },
+            "151_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "152_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Travel Costs Label",
+              "value": "Travel Costs Text"
+            },
+            "154_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Contact point for applicants",
+              "value": "Candidates may contact Jeff Glekin about the role and working overseas in Columbia by email on jeff.glekin@fco.gov.uk or by phone using +571 326 8203."
+            },
+            "179_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "180_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Online test instructions Label",
+              "value": "Online test instructions Text"
+            },
+            "184_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Pensions",
+              "value": "<a href=\"http://www.civilservice.gov.uk/pensions/\" target=\"_blank\"> Civil Service pension schemes</a> may be available for successful candidates."
+            },
+            "185_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "186_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Submission statement",
+              "value": ""
+            },
+            "187_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "188_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Terms & Conditions",
+              "value": ""
+            },
+            "189_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18038",
+                "text": "Yes"
+              }
+            },
+            "190_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Candidates in their probationary period are eligible to apply for vacancies within this department."
+            },
+            "191_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Candidates in their probationary period are not eligible to apply for vacancies within this department."
+            },
+            "192_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18038",
+                "text": "Yes"
+              }
+            },
+            "193_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "Nationality statement",
+              "value": "Candidates will be subject to <a href=\"https://www.gov.uk/browse/visas-immigration/work-visas/\" target=\"_blank\">UK immigration</a> requirements as well as <a href=\"https://www.gov.uk/government/publications/nationality-rules\" target=\"_blank\">Civil Service nationality rules</a>.<br /><br />If you're applying for a role requiring security clearance please be aware that foreign or dual nationality is not an automatic bar. However certain posts may have restrictions which could affect those who do not have sole British nationality or who have personal connections with certain countries outside the UK."
+            },
+            "194_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "195_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "196_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "For jobs based in Northern Ireland, applications are welcome from all sectors of the community, but members from the Protestant community are particularly welcomed, as this group is currently underrepresented in our workforce."
+            },
+            "197_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "For jobs based in Northern Ireland, applications are welcome from all sectors of the community, but members from the Roman Catholic community are particularly welcomed, as this group is currently underrepresented in our workforce."
+            },
+            "216_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Successful candidates must pass <a href=\"https://www.gov.uk/government/publications/government-baseline-personnel-security-standard\" onclick=\"ga('send', 'event', 'Security', 'click', 'Security guidance');\" target=\"_blank\">basic security checks</a>."
+            },
+            "217_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Successful candidates must meet the security requirements before they can be appointed. The level of security needed is <a href=\"https://www.gov.uk/government/publications/national-security-vetting-advice-for-people-who-are-being-vetted\" onclick=\"ga('send', 'event', 'Security', 'click', 'Security guidance');\" target=\"_blank\">counter-terrorist check</a>."
+            },
+            "218_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "Successful candidates must meet the security requirements before they can be appointed. The level of security needed is <a href=\"https://www.gov.uk/government/publications/national-security-vetting-advice-for-people-who-are-being-vetted\" onclick=\"ga('send', 'event', 'Security', 'click', 'Security guidance');\" target=\"_blank\">security check</a>."
+            },
+            "219_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Successful candidates must meet the security requirements before they can be appointed. The level of security needed is <a href=\"https://www.gov.uk/government/publications/national-security-vetting-advice-for-people-who-are-being-vetted\" onclick=\"ga('send', 'event', 'Security', 'click', 'Security guidance');\" target=\"_blank\">developed vetting</a>."
+            },
+            "220_5070000": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "248822",
+                "text": "Other"
+              }
+            },
+            "221_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Some benefits text"
+            },
+            "222_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Overseas Allowances text"
+            },
+            "230_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "School leaving age statement",
+              "value": ""
+            },
+            "231_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "232_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Continuous employment",
+              "value": "If you're employed by a non-departmental public body (NDPB) and are applying for a job in the Civil Service (or vice versa) by moving jobs this will involve a change of employer and you may break the statutory rules on <a href=\"https://www.gov.uk/continuous-employment-what-it-is\" target=\"_blank\">continuity of employment</a>."
+            },
+            "247_5070000": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "The <a href=\"http://civilservicecommission.independent.gov.uk/code/\" target=\"_blank\">Civil Service Code</a> sets out the standards of behaviour expected of civil servants.<br /><br />We recruit by merit on the basis of fair and open competition, as outlined in the Civil Service Commission's <a href=\"http://civilservicecommission.independent.gov.uk/wp-content/uploads/2015/05/RECRUITMENT-PRINCIPLES-FINAL.pdf\" target=\"_blank\">recruitment principles</a>."
+            },
+            "255_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "286_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "287_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "288_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "289_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18039",
+                "text": "No"
+              }
+            },
+            "290_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "291_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "292_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "293_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "298_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "306_5070000": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "18038",
+                "text": "Yes"
+              }
+            },
+            "307_5070000": {
+              "display": false,
+              "format": "text",
+              "label": "Pensions",
+              "value": ""
+            },
+            "all_competency_leadpara": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "We'll assess you against these competencies during the selection process:"
+            },
+            "appform_competency_leadpara": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "You must provide evidence against the following on your application form:"
+            },
+            "attachment": {
+              "display": true,
+              "format": "attachment",
+              "label": "",
+              "value": [
+                {
+                  "size": "317kB",
+                  "timestamp": "2018-04-03T03:28:54Z",
+                  "title": "Job Specification",
+                  "type": "pdf",
+                  "url": "https://files-csrtesting.wcn.co.uk/admin/fairs/apptrack/download.cgi?SID=b3duZXI9NTA3MDAwMCZvd25lcnR5cGU9ZmFpciZkb2NfdHlwZT12YWMmZG9jX2lkPTY2MjM4MCZ2ZXJpZnk9NjI1YzQ2Njg5MGUwNjVlZDdlMjZmNjYwMWU0MmFmMDk="
+                },
+                {
+                  "size": "200kB",
+                  "timestamp": "2018-04-03T03:29:32Z",
+                  "title": "Important Further Information",
+                  "type": "pdf",
+                  "url": "https://files-csrtesting.wcn.co.uk/admin/fairs/apptrack/download.cgi?SID=b3duZXI9NTA3MDAwMCZvd25lcnR5cGU9ZmFpciZkb2NfdHlwZT12YWMmZG9jX2lkPTY2MjM4MSZ2ZXJpZnk9YWMwNzVkNGVkY2MyM2YyMGEyNTdlYmM5ZTQ2ZDBmMmY="
+                }
+              ]
+            },
+            "attachment_count": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "2"
+            },
+            "closingdate": {
+              "display": true,
+              "format": "date",
+              "label": "Closing date",
+              "value": "2020-01-01"
+            },
+            "comp_appform_alias_1": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238953",
+                "text": "Leading and communicating"
+              }
+            },
+            "comp_appform_alias_1_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_2": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238959",
+                "text": "Delivering at pace"
+              }
+            },
+            "comp_appform_alias_2_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_3": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238954",
+                "text": "Collaborating and partnering"
+              }
+            },
+            "comp_appform_alias_3_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_4": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "238951",
+                "text": "Changing and improving"
+              }
+            },
+            "comp_appform_alias_4_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_5": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "comp_appform_alias_5_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_6": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "comp_appform_alias_6_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_7": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "comp_appform_alias_7_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "comp_appform_alias_8": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "comp_appform_alias_8_detail": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": ""
+            },
+            "competency_framework_link": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "<a href=\"https://www.gov.uk/government/publications/civil-service-competency-framework\" title=\"Civil Service Competency Framework\">Civil Service Competency Framework</a>"
+            },
+            "current_approach": {
+              "display": true,
+              "format": "lookup",
+              "label": "Approach",
+              "value": {
+                "code": "167806",
+                "text": "External"
+              }
+            },
+            "job_reference": {
+              "display": true,
+              "format": "text",
+              "label": "Reference number",
+              "value": "1562398"
+            },
+            "location": {
+              "display": true,
+              "format": "location",
+              "label": "",
+              "value": [
+                {
+                  "easting": "0",
+                  "latitude": "0",
+                  "longitude": "0",
+                  "northing": "0",
+                  "region": "REGION_SW",
+                  "text": "REGION_SW"
+                }
+              ]
+            },
+            "location_count": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "1"
+            },
+            "location_method": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "REGION"
+            },
+            "nghr_competency_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "Yes"
+            },
+            "nghr_compno": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "247971",
+                "text": "4"
+              }
+            },
+            "nghr_dept": {
+              "display": true,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "183995",
+                "text": "Department for International Trade"
+              }
+            },
+            "nghr_emp_type": {
+              "display": true,
+              "format": "multi_lookup",
+              "label": "Contract type",
+              "value": [
+                {
+                  "code": "167699",
+                  "text": "Loan"
+                },
+                {
+                  "code": "256378",
+                  "text": "Overseas"
+                }
+              ]
+            },
+            "nghr_grade": {
+              "display": true,
+              "format": "multi_lookup",
+              "label": "",
+              "value": [
+                {
+                  "code": "166601",
+                  "text": "Grade 7"
+                }
+              ]
+            },
+            "nghr_grade_entry_qualification_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "No"
+            },
+            "nghr_job_category": {
+              "display": true,
+              "format": "multi_lookup",
+              "label": "Type of role",
+              "value": [
+                {
+                  "code": "166438",
+                  "text": "Commercial"
+                },
+                {
+                  "code": "166442",
+                  "text": "Economist"
+                },
+                {
+                  "code": "166619",
+                  "text": "Operational Delivery"
+                },
+                {
+                  "code": "182778",
+                  "text": "Other"
+                }
+              ]
+            },
+            "nghr_languages_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "Yes"
+            },
+            "nghr_licence_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "No"
+            },
+            "nghr_max_salary": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "£56,786"
+            },
+            "nghr_membership_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "No"
+            },
+            "nghr_min_salary": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "£43,967"
+            },
+            "nghr_qualification_required": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "No"
+            },
+            "nghr_reserve": {
+              "display": true,
+              "format": "lookup",
+              "label": "Nationality requirements",
+              "value": {
+                "code": "167682",
+                "text": "Open to UK nationals only."
+              }
+            },
+            "nghr_salary": {
+              "display": true,
+              "format": "multi_lookup",
+              "label": "",
+              "value": [
+                {
+                  "code": "166639",
+                  "text": "  40,001 - 50,000"
+                },
+                {
+                  "code": "166640",
+                  "text": "  50,001 - 60,000"
+                }
+              ]
+            },
+            "nghr_site": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "Overseas: Bogotá, Columbia"
+            },
+            "nghr_stage": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": "4) External"
+            },
+            "nghr_stage3_override": {
+              "display": false,
+              "format": "enum",
+              "label": "",
+              "value": ""
+            },
+            "nghr_test_type": {
+              "display": false,
+              "format": "lookup",
+              "label": "",
+              "value": {
+                "code": "",
+                "text": ""
+              }
+            },
+            "reserve_extra": {
+              "display": false,
+              "format": "text",
+              "label": "",
+              "value": "<br /><br />This job is not open to candidates who hold a dual nationality."
+            },
+            "startdate_across_gov": {
+              "display": false,
+              "format": "date",
+              "label": "",
+              "value": ""
+            },
+            "startdate_external": {
+              "display": true,
+              "format": "date",
+              "label": "",
+              "value": "2018-01-01"
+            },
+            "startdate_live": {
+              "display": false,
+              "format": "date",
+              "label": "",
+              "value": "2018-01-01"
+            },
+            "v9applyurl": {
+              "display": true,
+              "format": "text",
+              "label": "Apply Now",
+              "value": "https://csrtesting.wcn.co.uk/csr/login.cgi?jcode=1562398"
+            },
+            "vac_template": {
+              "display": false,
+              "format": "text",
+              "label": "Apply online (applicants will apply online via CS Jobs)",
+              "value": "1478"
+            },
+            "vactitle": {
+              "display": true,
+              "format": "text",
+              "label": "",
+              "value": "D6 Director DIT and Commercial Counsellor Bogotá"
+            }
+          },
+          "jcode": "1562398",
+          "vacancyResponseStatus": 1,
+          "vacancyResponseStatusMessage": "success",
+          "vacancyTimestamp": "2018-04-10T10:52:02Z"
+        }
+      ]
+    },
+    "responseType": "jobResponse",
+    "serviceVersion": "1.00",
+    "statusCode": 1,
+    "statusMessage": "success"
+  }
+}

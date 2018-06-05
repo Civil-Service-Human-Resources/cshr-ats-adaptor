@@ -1,0 +1,18 @@
+{
+  "vacancyResponse": {
+    "responseData": {
+      "responseDataTimestamp": "2018-04-13T11:15:56Z",
+      "vacancy": [
+        {
+          "jcode": "1547353",
+          "vacancyResponseStatus": 7,
+          "vacancyResponseStatusMessage": "the number of jcodes in the request exceeded the current vacancyJobRequestLimit. Data for this jcode was not returned."
+        }
+      ]
+    },
+    "responseType": "jobResponse",
+    "serviceVersion": "1.00",
+    "statusCode": 1,
+    "statusMessage": "success"
+  }
+}

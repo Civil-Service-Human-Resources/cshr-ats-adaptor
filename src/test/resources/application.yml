@@ -1,0 +1,52 @@
+ats:
+  authentication:
+    token: token
+  client:
+    id: clientIdsss
+  jobrun:
+    history:
+      directory: ./
+      file: jobRunHistory.txt
+  request:
+    batch:
+      size: 100
+    endpoint: /theurl
+
+cshr:
+  api:
+    service:
+      department:
+        findAll:
+          endpoint: http://localhost/department
+      search:
+        username: searchusername
+        password: searchpassword
+      vacancy:
+        findAll:
+          endpoint: http://localhost:8080/vacancy?page={page}&size={size}
+        load:
+          endpoint: http://localhost:8080/vacancy/{id}
+        save:
+          endpoint: http://localhost:8080/vacancy/save
+          password: crudpassword
+          username: crudusername
+  jobrun:
+    audit:
+      directory: ./
+      basefilename: VacancyProcessor
+    cron:
+      schedule: "0 0 0/5 * * ?"
+  ats:
+    vendor:
+      id: vendorId
+
+slack:
+  notification:
+    channel:
+    endpoint:
+
+spring:
+  security:
+    service:
+      password: servicepassword
+      username: serviceusername

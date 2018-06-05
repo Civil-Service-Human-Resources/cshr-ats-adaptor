@@ -1,0 +1,56 @@
+version: 2
+jobs:
+  build:
+    environment:
+    - AZURE_URL: "cshrrpg.azurecr.io"
+
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Login to azure container repo
+          command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
+
+      - run:
+          name: Build image
+          command: |
+            docker build -t ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} --build-arg arg_maven_repo="${MAVEN_REPO}" .
+
+
+      - run:
+          name: Tag and push
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              # If this is a merge develop branch build, and successful, push to bintray as latest.
+              # Release versions will be tagged as such
+              docker tag ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/cshr-ats-adaptor:latest
+              docker push ${AZURE_URL}/cshr-ats-adaptor:latest
+            else
+              docker tag ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_BRANCH}
+              docker push ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_BRANCH}
+            fi
+            docker push ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID}
+
+  notify_pipeline:
+    machine: true
+
+    steps:
+      - run:
+          name: notify jenkins
+          command: curl -X POST --user "circleci:${JENKINS_API_KEY}"  "https://${JENKINS_HOST}/job/deploy-cshr-ats-adaptor/buildWithParameters?dockerTag=${CIRCLE_WORKFLOW_ID}"
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - notify_pipeline:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+                - release*

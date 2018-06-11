@@ -31,7 +31,7 @@ if [[ ${#} -eq 0 ]]; then
         -Dcshr.ats.vendor.id=${CSHR_ATS_VENDOR_ID} \
         -Dcshr.jobrun.audit.basefilename=${CSHR_JOBRUN_AUDIT_BASEFILENAME} \
         -Dcshr.jobrun.audit.directory=${CSHR_JOBRUN_AUDIT_DIRECTORY} \
-        -Dcshr.jobrun.cron.schedule="${CSHR_JOBRUN_CRON_SCHEDULE}" \
+        -Dcshr.jobrun.fixed.delay=${CSHR_JOBRUN_FIXED_DELAY} \
         -Dserver.port=${SERVER_PORT} \
         -Dspring.security.service.password=${SPRING_SECURITY_SERVICE_PASSWORD} \
         -Dspring.security.service.username=${SPRING_SECURITY_SERVICE_USERNAME} \

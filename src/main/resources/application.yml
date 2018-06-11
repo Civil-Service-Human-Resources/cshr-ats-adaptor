@@ -37,8 +37,8 @@ cshr:
     audit:
       directory: ./
       basefilename: VacancyProcessor
-    cron:
-      schedule: "0 1/5 * * * ?"
+    fixed:
+      delay: 300000
 
 spring:
   security:

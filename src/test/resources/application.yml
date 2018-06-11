@@ -34,8 +34,8 @@ cshr:
     audit:
       directory: ./
       basefilename: VacancyProcessor
-    cron:
-      schedule: "0 0 0/5 * * ?"
+    fixed:
+      delay: 300000
   ats:
     vendor:
       id: vendorId

@@ -72,7 +72,7 @@ public class VacanciesController implements VacanciesApi {
         return ResponseEntity.ok(ResponseBuilder.buildServiceStatus(processStatistics));
     }
 
-    @Scheduled(cron = "${cshr.jobrun.cron.schedule}")
+    @Scheduled(fixedDelayString = "${cshr.jobrun.fixed.delay}")
     public void runLoadVacancies() {
         CSHRServiceStatus serviceStatus;
 

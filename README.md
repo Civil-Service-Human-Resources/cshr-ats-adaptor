@@ -35,7 +35,7 @@ The following variables need to be set when starting the container:
 1. **cshr.ats.vendor.id** - A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable.  
 1. **cshr.jobrun.audit.directory** - The directory where process audit log files are written. A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable. 
 1. **cshr.jobrun.audit.basefilename** - The basename of the process audit log filename. The system appends a datetimestamp to the base file name. A default version exists in application.yml.  If this needs to be overriden supply the value when setting this environment variable.
-1. **cshr.jobrun.cron.schedule** - The cron schedule for this job. **Note: The cron schedule is Spring Cron which introduces a 6th parameter at the start of the configuration for seconds. This differs from the normal cron configuration which starts with minutes**
+1. **cshr.jobrun.fixed.delay** - The fixed period of time in milliseconds between the end of one invocation of the ats vacancies load job and the start of the next one.
 1. **slack.notification.channel** - The name of the channel on Slack to which the response for each instance of running the scheduled process is posted to.
 1. **slack.notification.endpoint** - The endpoint for the Slack instance where the channel lives.
 1. **spring.security.service.username** - The basic auth username required to access this service. The default developer value must be overridden for all non developer environments.

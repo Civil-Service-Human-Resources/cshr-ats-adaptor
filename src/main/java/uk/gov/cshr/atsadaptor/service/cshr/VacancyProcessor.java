@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.cshr.atsadaptor.exception.ExternalApplicantTrackingSystemException;
+import uk.gov.cshr.atsadaptor.exception.InvalidDepartmentException;
 import uk.gov.cshr.atsadaptor.service.ats.ServiceResponseStatus;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.JobRetriever;
 import uk.gov.cshr.atsadaptor.service.ats.jobrequest.model.JobRequestResponseWrapper;
@@ -124,7 +125,7 @@ public class VacancyProcessor {
 
             auditFileProcessor.addAuditFileEntry(auditFile, jobRef, response);
             updateJobHistoryFile(jobRef, historyFile, jobs);
-        } catch (ExternalApplicantTrackingSystemException ex) {
+        } catch (ExternalApplicantTrackingSystemException | InvalidDepartmentException ex) {
             if (ServiceResponseStatus.JOB_NOT_LIVE.getErrorMessage().equals(ex.getCshrServiceStatus().getSummary())) {
                 jobsNoLongerActive.add(jobRef);
             }

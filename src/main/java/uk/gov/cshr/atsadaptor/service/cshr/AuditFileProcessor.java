@@ -89,9 +89,9 @@ public class AuditFileProcessor {
             output.append(UNKNOWN);
         }
 
-        output.append("\t\tERROR\t\tN/a\t\t\t\t")
+        output.append("\t\tERROR\t\tN/a\t\t")
                 .append(serviceStatus.getCode())
-                .append("\t\t\t\t")
+                .append("\t\t")
                 .append(serviceStatus.getSummary())
                 .append(System.lineSeparator())
                 .append(System.lineSeparator());

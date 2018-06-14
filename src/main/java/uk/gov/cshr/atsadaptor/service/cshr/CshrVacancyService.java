@@ -38,6 +38,7 @@ import uk.gov.cshr.atsadaptor.service.cshr.model.ProcessStatistics;
 public class CshrVacancyService implements VacancyService {
     private static final String IDENTIFIER = "identifier";
 
+    private DepartmentsService departmentsService;
     private VacancyProcessor vacancyProcessor;
     private RestTemplateBuilder restTemplateBuilder;
 
@@ -54,9 +55,10 @@ public class CshrVacancyService implements VacancyService {
 
     private RestTemplate cshrRestTemplate;
 
-    public CshrVacancyService(VacancyProcessor vacancyProcessor, RestTemplateBuilder restTemplateBuilder) {
+    public CshrVacancyService(VacancyProcessor vacancyProcessor, RestTemplateBuilder restTemplateBuilder, DepartmentsService departmentsService) {
         this.vacancyProcessor = vacancyProcessor;
         this.restTemplateBuilder = restTemplateBuilder;
+        this.departmentsService = departmentsService;
     }
 
     @PostConstruct
@@ -75,6 +77,8 @@ public class CshrVacancyService implements VacancyService {
 
         Iterables.partition(changedVacancies, atsRequestBatchSize)
                 .forEach(batch -> vacancyProcessor.process(batch, jobsNoLongerActive, auditFilePath, processStatistics));
+
+        departmentsService.evictCache();
 
         return jobsNoLongerActive;
     }

@@ -15,4 +15,8 @@ public class TestDepartmentService implements DepartmentsService {
 
         return departments;
     }
+
+    @Override
+    public void evictCache() {
+    }
 }

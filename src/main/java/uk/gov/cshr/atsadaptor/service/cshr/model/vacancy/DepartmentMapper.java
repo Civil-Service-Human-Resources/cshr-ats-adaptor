@@ -34,7 +34,7 @@ class DepartmentMapper extends LookupMapper {
      * <p>
      * <p>If no id can be found then null object representing the department will be returned.
      *
-     * @param jobRef the job reference for the vacancy in the pplicant Tracking System
+     * @param jobRef the job reference for the vacancy in the Applicant Tracking System
      * @param source raw data from Applicant Tracking System used to extract and map
      * @return object representing the department or null if it cannot be mapped
      */

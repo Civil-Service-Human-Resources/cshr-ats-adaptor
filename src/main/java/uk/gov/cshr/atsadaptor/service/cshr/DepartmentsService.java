@@ -12,7 +12,12 @@ public interface DepartmentsService {
      * Loads all the departments from the CSHR Vacancy data store and creates a cache on startup so
      * that the api call to the CSHR data store is only made once.
      *
-     * @return lit of departments from the CSHR Vacancy data store
+     * @return list of departments from the CSHR Vacancy data store
      */
     List<Department> getDepartments();
+
+    /**
+     * Removes all departments from the cache
+     */
+    void evictCache();
 }

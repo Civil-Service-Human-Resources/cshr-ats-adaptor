@@ -5,9 +5,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.cshr.atsadaptor.exception.InvalidDepartmentException;
 import uk.gov.cshr.atsadaptor.service.cshr.DepartmentsService;
 import uk.gov.cshr.atsadaptor.service.cshr.model.department.Department;
+import uk.gov.cshr.status.CSHRServiceStatus;
+import uk.gov.cshr.status.StatusCode;
 
 /**
  * This class is responsible for mapping the Applicant Tracking System's value for the name of the
@@ -30,16 +34,22 @@ class DepartmentMapper extends LookupMapper {
      * <p>
      * <p>If no id can be found then null object representing the department will be returned.
      *
+     * @param jobRef the job reference for the vacancy in the pplicant Tracking System
      * @param source raw data from Applicant Tracking System used to extract and map
      * @return object representing the department or null if it cannot be mapped
      */
-    Map<String, Object> map(Map<String, Object> source) {
+    Map<String, Object> map(String jobRef, Map<String, Object> source) {
         log.debug("Mapping a data for a department");
 
         Map<String, Object> departmentContent = null;
 
         if (mainFieldCanBeMapped(source, "nghr_dept")) {
             String departmentName = getValue(source, "nghr_dept");
+
+            if (StringUtils.isBlank(departmentName)) {
+                log.debug("No department name supplied");
+                throw new InvalidDepartmentException(buildStatusForException("No department was supplied for a vacancy with jobRef '" + jobRef + "'"));
+            }
 
             log.debug("Looking up id for department called " + departmentName);
 
@@ -56,10 +66,24 @@ class DepartmentMapper extends LookupMapper {
                 departmentContent.put("name", department.get().getName());
                 log.debug("Result of DepartmentMapper mapping is " + departmentContent.toString());
             } else {
-                log.debug("No department was found");
+                String summary = "A department called '"
+                        + departmentName
+                        + "' for a vacancy with jobRef '"
+                        + jobRef
+                        + "' is not recognised in the CSHR Vacancy Data Store";
+                log.debug(summary);
+
+                throw new InvalidDepartmentException(buildStatusForException(summary));
             }
         }
 
         return departmentContent;
+    }
+
+    private CSHRServiceStatus buildStatusForException(String summary) {
+        return CSHRServiceStatus.builder()
+                .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
+                .summary(summary)
+                .build();
     }
 }

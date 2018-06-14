@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,17 +54,14 @@ public class CshrDepartmentsService implements DepartmentsService {
             Map<String, Object> content = response.getBody();
             List<Map<String, Object>> departments = (List<Map<String, Object>>) content.get("content");
 
-            log.debug(
-                    "Retrieved " + departments.size() + " departments and starting to create the cache");
+            log.debug("Retrieved " + departments.size() + " departments and starting to create the cache");
 
             return departments
                     .stream()
-                    .map(
-                            d ->
-                                    Department.builder()
-                                            .id(((Double) (d.get("id"))).intValue())
-                                            .name((String) d.get("name"))
-                                            .build())
+                    .map(d -> Department.builder()
+                            .id(((Double) (d.get("id"))).intValue())
+                            .name((String) d.get("name"))
+                            .build())
                     .collect(Collectors.toList());
         } else {
             throw new LoadDepartmentsException(
@@ -86,5 +84,10 @@ public class CshrDepartmentsService implements DepartmentsService {
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         return new HttpEntity<>(headers);
+    }
+
+    @CacheEvict(value = "departments", allEntries = true)
+    public void evictCache() {
+        log.info("Evicting all items from the departments cache");
     }
 }

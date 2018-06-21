@@ -90,6 +90,8 @@ public class VacanciesController implements VacanciesApi {
             serviceStatus = buildCshrServiceStatus(details);
 
         } catch (Exception re) {
+            log.error("An error occurred trying to run the load vacancies job.", re);
+
             List<String> details = new ArrayList<>();
             details.add(re.getMessage());
 

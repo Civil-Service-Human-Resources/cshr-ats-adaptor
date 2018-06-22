@@ -4,6 +4,14 @@
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
+    <appender name="CONTROLLER_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                Controller LOG: %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>
@@ -14,10 +22,9 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_DIR:-logs}/cshr-ats-adaptor/atsAdaptorLogFile.log</File>
+
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <FileNamePattern>
-                ${LOG_DIR:-logs}/cshr-ats-adaptor/atsAdaptorLogFile.log.%d{yyyy-MM-dd_HH-mm}.%i.log.zip
-            </FileNamePattern>
+            <fileNamePattern>${LOG_DIR:-logs}/cshr-ats-adaptor/atsAdaptorLogFile.%d{yyyy-MM-dd_HH-mm}.%i.log.zip</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>200MB</totalSizeCap>
@@ -29,21 +36,18 @@
             </Pattern>
         </layout>
     </appender>
-    <root level="DEBUG">
+
+    <root level="ERROR">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>
     </root>
-    <springProfile name="dev">
-        <root level="DEBUG">
-            <appender-ref ref="FILE"/>
-            <appender-ref ref="STDOUT"/>
-        </root>
-    </springProfile>
-    <springProfile name="prod">
-        <root level="INFO">
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
 
+    <logger name="uk.gov.cshr.atsadaptor" level="INFO" additivity="FALSE">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
 
+    <logger name="ch.qos.logback" level="ERROR" additivity="false">
+        <appender-ref ref="CONTROLLER_LOGGER" />
+    </logger>
 </configuration>

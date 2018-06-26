@@ -10,7 +10,7 @@ jobs:
       - run:
           name: Login to azure container repo
           command: docker login -u ${ACR_ID} -p ${ACR_PASS} ${AZURE_URL}
-          
+
       - run:
           name: Build image
           command: |
@@ -20,11 +20,14 @@ jobs:
       - run:
           name: Tag and push
           command: |
-            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               # If this is a merge develop branch build, and successful, push to bintray as latest.
               # Release versions will be tagged as such
-              docker tag ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/cshr-ats-adaptor:develop
-              docker push ${AZURE_URL}/cshr-ats-adaptor:develop
+              docker tag ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/cshr-ats-adaptor:latest
+              docker push ${AZURE_URL}/cshr-ats-adaptor:latest
+            else
+              docker tag ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID} ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_BRANCH}
+              docker push ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_BRANCH}
             fi
             docker push ${AZURE_URL}/cshr-ats-adaptor:${CIRCLE_WORKFLOW_ID}
 
@@ -48,4 +51,6 @@ workflows:
           filters:
             branches:
               only:
+                - master
                 - develop
+                - release*

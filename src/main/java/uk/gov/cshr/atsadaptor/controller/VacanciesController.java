@@ -23,6 +23,8 @@ import uk.gov.cshr.status.StatusCode;
 @RestController
 @Slf4j
 public class VacanciesController implements VacanciesApi {
+    private static final String UNEXPECTED_ERROR = "An unexpected error has occurred trying to run the ATS Vacancy Data Load process. ";
+
     private AuditFileProcessor auditFileProcessor;
     private JobsListFilter jobsListFilter;
     private JobsListRetriever jobsListRetriever;
@@ -88,12 +90,11 @@ public class VacanciesController implements VacanciesApi {
             }
 
             serviceStatus = buildCshrServiceStatus(details);
-
         } catch (Exception re) {
             List<String> details = new ArrayList<>();
             details.add(re.getMessage());
 
-            serviceStatus = buildCshrServiceStatus(details);
+          serviceStatus = buildCshrServiceStatus(details);
         }
 
         slackNotificationService.postResponseToSlack(serviceStatus);

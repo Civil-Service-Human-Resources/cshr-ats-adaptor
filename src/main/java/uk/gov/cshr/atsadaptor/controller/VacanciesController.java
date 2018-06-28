@@ -74,30 +74,27 @@ public class VacanciesController implements VacanciesApi {
         return ResponseEntity.ok(ResponseBuilder.buildServiceStatus(processStatistics));
     }
 
-    @Scheduled(cron = "${cshr.jobrun.cron.schedule}")
+    @Scheduled(fixedDelayString = "${cshr.jobrun.fixed.delay}")
     public void runLoadVacancies() {
         CSHRServiceStatus serviceStatus;
 
         try {
             serviceStatus = loadVacancies().getBody();
         } catch (CSHRServiceException ex ) {
-            log.error(UNEXPECTED_ERROR + ex.getCshrServiceStatus().getSummary(), ex);
-
             List<String> details = new ArrayList<>();
             details.add(ex.getCshrServiceStatus().getSummary());
 
-            if (ex.getCshrServiceStatus().getDetail() != null  && !ex.getCshrServiceStatus().getDetail().isEmpty()) {
+            if (ex.getCshrServiceStatus().getDetail() != null
+                    && !ex.getCshrServiceStatus().getDetail().isEmpty()) {
                 details.addAll(ex.getCshrServiceStatus().getDetail());
             }
 
             serviceStatus = buildCshrServiceStatus(details);
-        } catch (Exception ex) {
-            log.error(UNEXPECTED_ERROR, ex);
-
+        } catch (Exception re) {
             List<String> details = new ArrayList<>();
-            details.add(ex.getMessage());
+            details.add(re.getMessage());
 
-            serviceStatus = buildCshrServiceStatus(details);
+          serviceStatus = buildCshrServiceStatus(details);
         }
 
         slackNotificationService.postResponseToSlack(serviceStatus);
@@ -106,7 +103,7 @@ public class VacanciesController implements VacanciesApi {
     private CSHRServiceStatus buildCshrServiceStatus(List<String> details) {
         return CSHRServiceStatus.builder()
                 .code(StatusCode.INTERNAL_SERVICE_ERROR.getCode())
-                .summary(UNEXPECTED_ERROR)
+                .summary("An unexpected error has occurred trying to run the ATS Vacancy Data Load process")
                 .detail(details)
                 .build();
     }

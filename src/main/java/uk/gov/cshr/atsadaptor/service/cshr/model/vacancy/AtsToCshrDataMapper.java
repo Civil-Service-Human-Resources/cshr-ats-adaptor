@@ -74,7 +74,7 @@ public class AtsToCshrDataMapper {
             result.put("active", active);
             result.put("atsVendorIdentifier", atsVendorId);
             result.put("applyURL", linkToApplyMapper.map(atsVacancy));
-            result.put("closingDate", dateMapper.map(atsVacancy, "closingdate"));
+            result.put("closingDate", dateMapper.map(atsVacancy, "closingdate", false));
             result.put("contactDepartment", "");
             result.put("contactEmail", "");
             result.put("contactName", defaultMapper.map(atsVacancy, "154_5070000"));
@@ -85,9 +85,9 @@ public class AtsToCshrDataMapper {
             result.put("displayCscContent", displayCscContentMapper.map(atsVacancy));
             String eligibility = defaultMapper.map(atsVacancy, "190_5070000");
             result.put("eligibility", eligibility != null ? eligibility : "");
-            result.put("governmentOpeningDate", dateMapper.map(atsVacancy, "startdate_across_gov"));
+            result.put("governmentOpeningDate", dateMapper.map(atsVacancy, "startdate_across_gov", true));
             result.put("grade", multiLookupMapper.map(atsVacancy, "nghr_grade"));
-            result.put("internalOpeningDate", dateMapper.map(atsVacancy, "startdate_live"));
+            result.put("internalOpeningDate", dateMapper.map(atsVacancy, "startdate_live", true));
             result.put("locationOverride", defaultMapper.map(atsVacancy, "nghr_site"));
             result.put("nationalityStatement", nationalStatementMapper.map(atsVacancy));
             String numVacancies = lookupMapper.map(atsVacancy, "070_5070000");
@@ -96,7 +96,7 @@ public class AtsToCshrDataMapper {
             result.put("numberVacancies", numberOfVacancies);
             result.put("overseasJob", overseasJobMapper.map(atsVacancy));
             result.put("personalSpecification", personalSpecificationMapper.map(atsVacancy));
-            result.put("publicOpeningDate", dateMapper.map(atsVacancy, "startdate_external"));
+            result.put("publicOpeningDate", dateMapper.map(atsVacancy, "startdate_external", true));
             result.put("regions", regionsMapper.map(atsVacancy));
             result.put("responsibilities", "");
             result.put("salaryMax", maximumSalaryMapper.map(atsVacancy));

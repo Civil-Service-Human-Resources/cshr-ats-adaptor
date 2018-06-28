@@ -37,8 +37,8 @@ cshr:
     audit:
       directory: ./
       basefilename: VacancyProcessor
-    cron:
-      schedule:
+    fixed:
+      delay: 300000
 
 slack:
   notification:

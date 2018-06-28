@@ -70,7 +70,8 @@ public class AtsToCshrDataMapper {
         Map<String, Object> result = new HashMap<>();
 
         if (atsVacancy != null && !atsVacancy.isEmpty() && responseIsSuccessful(atsVacancy)) {
-            result.put("identifier", defaultMapper.map(atsVacancy, "job_reference"));
+            String jobRef = defaultMapper.map(atsVacancy, "job_reference");
+            result.put("identifier", jobRef);
             result.put("active", active);
             result.put("atsVendorIdentifier", atsVendorId);
             result.put("applyURL", linkToApplyMapper.map(atsVacancy));
@@ -80,7 +81,7 @@ public class AtsToCshrDataMapper {
             result.put("contactName", defaultMapper.map(atsVacancy, "154_5070000"));
             result.put("contactTelephone", "");
             result.put("contractTypes", multiLookupMapper.map(atsVacancy, "nghr_emp_type"));
-            result.put("department", departmentMapper.map(atsVacancy));
+            result.put("department", departmentMapper.map(jobRef, atsVacancy));
             result.put("description", defaultMapper.map(atsVacancy, "015_5070000"));
             result.put("displayCscContent", displayCscContentMapper.map(atsVacancy));
             String eligibility = defaultMapper.map(atsVacancy, "190_5070000");

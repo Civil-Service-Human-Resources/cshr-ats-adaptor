@@ -89,6 +89,7 @@ public class AtsToCshrDataMapper {
             result.put("governmentOpeningDate", dateMapper.map(atsVacancy, "startdate_across_gov", true));
             result.put("grade", multiLookupMapper.map(atsVacancy, "nghr_grade"));
             result.put("internalOpeningDate", dateMapper.map(atsVacancy, "startdate_live", true));
+            result.put("lengthOfEmployment", defaultMapper.map(atsVacancy, "041_5070000"));
             result.put("locationOverride", defaultMapper.map(atsVacancy, "nghr_site"));
             result.put("nationalityStatement", nationalStatementMapper.map(atsVacancy));
             String numVacancies = lookupMapper.map(atsVacancy, "070_5070000");

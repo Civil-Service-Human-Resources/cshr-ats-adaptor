@@ -30,17 +30,17 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_noSourceSupplied() {
+    public void map_noSourceSupplied() {
         assertThat(mapper.map(null, "closingdate", false), is(nullValue()));
     }
 
     @Test
-    public void testMap_emptySourceSupplied() {
+    public void map_emptySourceSupplied() {
         assertThat(mapper.map(new LinkedHashMap<>(), "closingdate", false), is(nullValue()));
     }
 
     @Test
-    public void testMap_dateDoesNotExist() throws IOException {
+    public void map_dateDoesNotExist() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "closingdate", true);
         Map<String, Object> field = getField(source,"closingdate");
@@ -50,7 +50,7 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_dateExistsGMT() throws IOException {
+    public void map_dateExistsGMT() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "closingdate", true);
         Map<String, Object> field = getField(source,"closingdate");
@@ -60,7 +60,7 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_dateExistsGMTExternalStartDate() throws IOException {
+    public void map_dateExistsGMTExternalStartDate() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "startdate_external", true);
         Map<String, Object> field = getField(source,"startdate_external");
@@ -70,7 +70,7 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_dateExistsGMTGovtStartDate() throws IOException {
+    public void map_dateExistsGMTGovtStartDate() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "startdate_across_gov", true);
         Map<String, Object> field = getField(source,"startdate_across_gov");
@@ -80,7 +80,7 @@ public class DateMapperTest extends AbstractMappingTest {
     }
 
     @Test
-    public void testMap_dateExistsGMTInternalStartDate() throws IOException {
+    public void map_dateExistsGMTInternalStartDate() throws IOException {
         Map<String, Object> source = getAtsSourceResponseData(VALID_ATS_OVERSEAS_JOB_REQUEST_RESPONSE);
         toggleDisplayFieldValue(source, "startdate_live", true);
         Map<String, Object> field = getField(source,"startdate_live");

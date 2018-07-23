@@ -33,6 +33,7 @@ if [[ ${#} -eq 0 ]]; then
         -Dcshr.jobrun.audit.directory=${CSHR_JOBRUN_AUDIT_DIRECTORY} \
         -Dcshr.jobrun.fixed.delay=${CSHR_JOBRUN_FIXED_DELAY} \
         -Dserver.port=${SERVER_PORT} \
+        -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}
         -Dspring.security.service.password=${SPRING_SECURITY_SERVICE_PASSWORD} \
         -Dspring.security.service.username=${SPRING_SECURITY_SERVICE_USERNAME} \
         -Dslack.notification.channel=${SLACK_NOTIFICATION_CHANNEL} \

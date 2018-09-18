@@ -40,6 +40,11 @@ cshr:
     fixed:
       delay: 300000
 
+slack:
+  notification:
+    channel:
+    endpoint:
+
 spring:
   security:
     service:
